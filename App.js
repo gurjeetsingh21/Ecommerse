@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const userRoutes = require("./routes/user");
+const authRoutes = require("./routes/auth");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -11,13 +11,13 @@ require("dotenv").config();
 const app = express();
 
 //middlewares
-app.use(morgan("dev"));
-app.use(bodyParser.json());
-app.use(cookieParser());
+app.use(morgan("dev")); //used to log requests on to the console
+app.use(bodyParser.json()); // used to parse the body to the controllers
+app.use(cookieParser()); 
 app.use(expressValidator());
 
 // routes middlewares
-app.use("/api", userRoutes);
+app.use("/api", authRoutes);
 
 // db
 mongoose
@@ -26,8 +26,10 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => console.log("Database Connected"));
-
+  
+// defining the port number in .env file
 const port = process.env.PORT || 8000;
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
