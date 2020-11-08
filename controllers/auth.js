@@ -41,7 +41,6 @@ exports.signin = (req, res) => {
         user: {},
       });
     }
-    console.log(user)
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
     res.cookie("t", token, { expire: new Date() + 9999 });
     const { _id, name, email, role } = user;
@@ -63,3 +62,24 @@ exports.requireSignin = expressJwt({
   algorithms: ["HS256"],
   userProperty: "auth",
 });
+
+exports.isAuth = (req, res, next) => {
+  let user = req.profile && req.auth && req.profile._id == req.auth._id;
+  if (!user) {
+    return res.status(200).json({
+      systemMessage: "Access Denied.",
+      systemMessageType: "error",
+    });
+  }
+  next();
+};
+
+exports.isAdmin = (req, res, next) => {
+  if (req.profile.role === 0) {
+    res.status(200).json({
+      systemMessage: "Admin Resourse! You are not admin",
+      systemMessageType: "error",
+    });
+  }
+  next();
+};
