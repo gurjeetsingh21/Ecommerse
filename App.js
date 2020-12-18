@@ -9,6 +9,7 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user")
 const categoryRoutes = require("./routes/category")
 const productRoutes = require("./routes/product")
+const cors = require('cors')
 
 // app
 const app = express();
@@ -18,6 +19,7 @@ app.use(morgan("dev")); //used to log requests on to the console
 app.use(bodyParser.json()); // used to parse the body to the controllers
 app.use(cookieParser()); 
 app.use(expressValidator());
+app.use(cors())
 
 // routes middlewares
 app.use("/api", authRoutes);
