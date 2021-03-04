@@ -1,0 +1,62 @@
+body {
+  font-family: "Nunito Sans", sans-serif !important;
+  font-size: 0.875rem !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: #6c757d !important;
+  text-align: left !important;
+  background-color: #f3f4f7 !important;
+  label {
+    font-weight: 600;
+  }
+  .h5 {
+    color: #4b4b5a;
+  }
+  .text-logo {
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #d8b049;
+  }
+  .input-group-text {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #4b4b5a;
+    text-align: center;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 1px solid #e2e7f1;
+    border-radius: 0.3rem;
+    .icon-dual {
+      color: #6c757d;
+      fill: rgba(108, 117, 125, 0.12);
+    }
+  }
+  .auth-page-sidebar {
+    background-image: url(./assets/Logo.png);
+    padding: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100%;
+    position: relative;
+    .auth-user-testimonial {
+      text-align: center;
+      color: black;
+      position: absolute;
+      margin: 0 auto;
+      padding: 0 1.75rem;
+      bottom: 3rem;
+      left: 0;
+      right: 0;
+    }
+  }
+  .button {
+    color: #fff;
+    background-color: #d8b049;
+    border-color: #d8b049;
+  }
+}
