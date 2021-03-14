@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   Container,
   Row,
@@ -18,12 +18,12 @@ import {
 } from "reactstrap";
 import logo from "../assets/Logo.png";
 import { Field, Form, Formik, FormikProps } from "formik";
-import { Mail, Lock,User } from "react-feather";
+import { Mail, Lock, User } from "react-feather";
 import { Link } from "react-router-dom";
 import "../global.scss";
 
 const Signup = () => {
-  const history = useHistory()
+  const history = useHistory();
   return (
     <React.Fragment>
       <div className="my-5">
@@ -44,26 +44,31 @@ const Signup = () => {
                       </div>
 
                       <h6 className="h5 mb-3 mt-2">Welcome!!!</h6>
-                      
+
                       <Formik
                         initialValues={{
                           email: "",
                           password: "",
-                          name:"",
+                          name: "",
                         }}
-                        onSubmit={async(values, actions) => {
+                        onSubmit={async (values, actions) => {
                           console.log(values);
-                          const response = await axios.post("http://localhost:8000/api/signup",{name:values.name,email:values.email,password:values.password})
+                          const response = await axios.post(
+                            "http://localhost:8000/api/signup",
+                            {
+                              name: values.name,
+                              email: values.email,
+                              password: values.password,
+                            }
+                          );
                           console.log(response);
-                          if (response.data.systemMessageType==="success"){
-                            history.push("/")
-
-                        }
-                        else{
-                          console.log(response.data.systemMessage)
-                        }
+                          if (response.data.systemMessageType === "success") {
+                            history.push("/");
+                          } else {
+                            console.log(response.data.systemMessage);
+                          }
                         }}
-                        render={({ values ,handleChange}) => (
+                        render={({ values, handleChange }) => (
                           <Form>
                             <FormGroup className="">
                               <Label for="name">Name</Label>
@@ -101,7 +106,7 @@ const Signup = () => {
                                 />
                               </InputGroup>
                             </FormGroup>
-                         
+
                             <FormGroup className="">
                               <Label for="password">Password</Label>
                               {/* <Link

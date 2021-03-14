@@ -1,6 +1,6 @@
 import React from "react";
 import Routes from "./Routes";
-// import "./global.scss";
+import "react-notifications/lib/notifications.css";
 
 const App = () => {
   return <Routes />;

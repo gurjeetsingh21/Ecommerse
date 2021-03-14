@@ -1,6 +1,6 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   Container,
   Row,
@@ -23,7 +23,7 @@ import { Link } from "react-router-dom";
 import "../global.scss";
 
 const Signin = () => {
-const history = useHistory()
+  const history = useHistory();
   return (
     <React.Fragment>
       <div className="my-5">
@@ -55,17 +55,18 @@ const history = useHistory()
                         }}
                         onSubmit={async (values, actions) => {
                           console.log(values);
-                          const response = await axios.post("http://localhost:8000/api/signin",{email:values.email,password:values.password})
+                          const response = await axios.post(
+                            "http://localhost:8000/api/signin",
+                            { email: values.email, password: values.password }
+                          );
                           console.log(response);
-                          if (response.data.systemMessageType==="success"){
-                            history.push("/")
-
-                        }
-                        else{
-                          console.log(response.data.systemMessage)
-                        }
+                          if (response.data.systemMessageType === "success") {
+                            history.push("/");
+                          } else {
+                            console.log(response.data.systemMessage);
+                          }
                         }}
-                        render={({ values,handleChange }) => (
+                        render={({ values, handleChange }) => (
                           <Form>
                             <FormGroup className="">
                               <Label for="username">Email ID</Label>
@@ -76,7 +77,7 @@ const history = useHistory()
                                   </span>
                                 </InputGroupAddon>
                                 <Input
-                                  onChange={handleChange }
+                                  onChange={handleChange}
                                   type="email"
                                   name="email"
                                   id="username"
@@ -100,7 +101,7 @@ const history = useHistory()
                                   </span>
                                 </InputGroupAddon>
                                 <Input
-                                  onChange={handleChange }
+                                  onChange={handleChange}
                                   type="password"
                                   name="password"
                                   id="password"
