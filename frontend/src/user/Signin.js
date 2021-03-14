@@ -1,4 +1,6 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
+import axios from "axios";
+import {useHistory} from "react-router-dom";
 import {
   Container,
   Row,
@@ -21,6 +23,7 @@ import { Link } from "react-router-dom";
 import "../global.scss";
 
 const Signin = () => {
+const history = useHistory()
   return (
     <React.Fragment>
       <div className="my-5">
@@ -33,9 +36,9 @@ const Signin = () => {
                     <Col md={6} className="p-5 position-relative">
                       <div className="mx-auto mb-5">
                         <a href="/">
-                          {/* <img src={logo} alt="" height="24" /> */}
+                          {/* <img src="./img1.jpg" alt="" height="24" /> */}
                           <h3 className="d-inline align-middle ml-1 text-logo">
-                            Book Your Books
+                            LOGIN
                           </h3>
                         </a>
                       </div>
@@ -50,13 +53,22 @@ const Signin = () => {
                           email: "",
                           password: "",
                         }}
-                        onSubmit={(values, actions) => {
+                        onSubmit={async (values, actions) => {
                           console.log(values);
+                          const response = await axios.post("http://localhost:8000/api/signin",{email:values.email,password:values.password})
+                          console.log(response);
+                          if (response.data.systemMessageType==="success"){
+                            history.push("/")
+
+                        }
+                        else{
+                          console.log(response.data.systemMessage)
+                        }
                         }}
-                        render={({ values }) => (
+                        render={({ values,handleChange }) => (
                           <Form>
                             <FormGroup className="">
-                              <Label for="username">Username</Label>
+                              <Label for="username">Email ID</Label>
                               <InputGroup>
                                 <InputGroupAddon addonType="prepend">
                                   <span className="input-group-text">
@@ -64,8 +76,9 @@ const Signin = () => {
                                   </span>
                                 </InputGroupAddon>
                                 <Input
-                                  type="text"
-                                  name="username"
+                                  onChange={handleChange }
+                                  type="email"
+                                  name="email"
                                   id="username"
                                   placeholder="hello@coderthemes.com"
                                   required
@@ -87,6 +100,7 @@ const Signin = () => {
                                   </span>
                                 </InputGroupAddon>
                                 <Input
+                                  onChange={handleChange }
                                   type="password"
                                   name="password"
                                   id="password"
@@ -107,20 +121,20 @@ const Signin = () => {
                           </Form>
                         )}
                       />
-                      <p className="mt-3">
+                      {/* <p className="mt-3">
                         <strong>Username:</strong> test &nbsp;&nbsp;{" "}
                         <strong>Password:</strong> test
-                      </p>
+                      </p> */}
                     </Col>
 
                     <Col md={6} className="d-none d-md-inline-block">
                       <div className="auth-page-sidebar">
                         <div className="overlay"></div>
                         <div className="auth-user-testimonial">
-                          <p className="lead">
+                          {/* <p className="lead">
                             "It's a elegent templete. I love it very much!"
-                          </p>
-                          <p>- Admin User</p>
+                          </p> */}
+                          {/* <p>- Admin User</p> */}
                         </div>
                       </div>
                     </Col>
