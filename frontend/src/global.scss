@@ -16,7 +16,7 @@ body {
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 1px;
-    color: #742506d7;;
+    color: #742506d7;
   }
   .input-group-text {
     display: flex;
@@ -37,8 +37,8 @@ body {
     }
   }
   .auth-page-sidebar {
-    background-image: url(./assets/img2.png);
-    margin:50px 55px 0px 0px;
+    // background-image: url(./assets/img2.png);
+    margin: 50px 55px 0px 0px;
     padding: 0;
     background-repeat: no-repeat;
     background-size: contain;
@@ -55,10 +55,13 @@ body {
       right: 0;
     }
   }
-  .button {
+  .btn-primary,
+  .btn-primary:hover,
+  .btn-primary:active,
+  .btn-primary:visited {
     color: #fff;
-    background-color:#742506d7;
+    background-color: #742506d7;
     border-color: #641f03;
-    margin-top:30px
+    margin-top: 30px;
   }
 }

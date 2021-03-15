@@ -16,11 +16,12 @@ import {
   InputGroupText,
   Input,
 } from "reactstrap";
-import logo from "../assets/Logo.png";
 import { Field, Form, Formik, FormikProps } from "formik";
 import { Mail, Lock } from "react-feather";
 import { Link } from "react-router-dom";
+import ErrorMessage from "../components/ErrorMessage";
 import "../global.scss";
+import { NotificationManager } from "react-notifications";
 
 const Signin = () => {
   const history = useHistory();
@@ -35,12 +36,10 @@ const Signin = () => {
                   <Row>
                     <Col md={6} className="p-5 position-relative">
                       <div className="mx-auto mb-5">
-                        <a href="/">
-                          {/* <img src="./img1.jpg" alt="" height="24" /> */}
-                          <h3 className="d-inline align-middle ml-1 text-logo">
-                            LOGIN
-                          </h3>
-                        </a>
+                        {/* <img src="./img1.jpg" alt="" height="24" /> */}
+                        <h3 className="d-inline align-middle ml-1 text-logo">
+                          LOGIN
+                        </h3>
                       </div>
 
                       <h6 className="h5 mb-0 mt-4">Welcome back!</h6>
@@ -54,16 +53,33 @@ const Signin = () => {
                           password: "",
                         }}
                         onSubmit={async (values, actions) => {
-                          console.log(values);
-                          const response = await axios.post(
-                            "http://localhost:8000/api/signin",
-                            { email: values.email, password: values.password }
-                          );
-                          console.log(response);
-                          if (response.data.systemMessageType === "success") {
-                            history.push("/");
-                          } else {
-                            console.log(response.data.systemMessage);
+                          try {
+                            console.log(values);
+                            const response = await axios.post(
+                              "http://localhost:8000/api/signin",
+                              { email: values.email, password: values.password }
+                            );
+                            console.log(response);
+                            if (response.data.systemMessageType === "success") {
+                              NotificationManager.success(
+                                "You have successfully logged in",
+                                "Success",
+                                3000
+                              );
+                              history.push("/");
+                            } else {
+                              NotificationManager.error(
+                                response.data.systemMessage,
+                                "Error",
+                                3000
+                              );
+                            }
+                          } catch (error) {
+                            NotificationManager.error(
+                              error.response.data.systemMessage,
+                              "Error",
+                              3000
+                            );
                           }
                         }}
                         render={({ values, handleChange }) => (
@@ -113,7 +129,7 @@ const Signin = () => {
                             <FormGroup className="form-group mb-0 text-center">
                               <Button
                                 className="btn-block button"
-                                // style={{ backgroundColor: "#d8b049" }}
+                                color="primary"
                                 // onClick={this.SuperAdminHandler}
                               >
                                 Log In

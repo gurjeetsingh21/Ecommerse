@@ -21,6 +21,7 @@ import { Field, Form, Formik, FormikProps } from "formik";
 import { Mail, Lock, User } from "react-feather";
 import { Link } from "react-router-dom";
 import "../global.scss";
+import { NotificationManager } from "react-notifications";
 
 const Signup = () => {
   const history = useHistory();
@@ -52,20 +53,36 @@ const Signup = () => {
                           name: "",
                         }}
                         onSubmit={async (values, actions) => {
-                          console.log(values);
-                          const response = await axios.post(
-                            "http://localhost:8000/api/signup",
-                            {
-                              name: values.name,
-                              email: values.email,
-                              password: values.password,
+                          try {
+                            const response = await axios.post(
+                              "http://localhost:8000/api/signup",
+                              {
+                                name: values.name,
+                                email: values.email,
+                                password: values.password,
+                              }
+                            );
+                            console.log(response);
+                            if (response.data.systemMessageType === "success") {
+                              NotificationManager.success(
+                                "You have been registered. Please login to continue",
+                                "Success",
+                                3000
+                              );
+                              history.push("/signin");
+                            } else {
+                              NotificationManager.error(
+                                response.data.systemMessage,
+                                "Error",
+                                3000
+                              );
                             }
-                          );
-                          console.log(response);
-                          if (response.data.systemMessageType === "success") {
-                            history.push("/");
-                          } else {
-                            console.log(response.data.systemMessage);
+                          } catch (error) {
+                            NotificationManager.error(
+                              error.response.data.systemMessage,
+                              "Error",
+                              3000
+                            );
                           }
                         }}
                         render={({ values, handleChange }) => (
@@ -134,7 +151,7 @@ const Signup = () => {
                             <FormGroup className="form-group mb-0 text-center">
                               <Button
                                 className="btn-block button"
-                                // style={{ backgroundColor: "#d8b049" }}
+                                color="primary"
                                 // onClick={this.SuperAdminHandler}
                               >
                                 Log In
