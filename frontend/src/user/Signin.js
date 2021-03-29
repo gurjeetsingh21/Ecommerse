@@ -19,7 +19,6 @@ import {
 import { Field, Form, Formik, FormikProps } from "formik";
 import { Mail, Lock } from "react-feather";
 import { Link } from "react-router-dom";
-import ErrorMessage from "../components/ErrorMessage";
 import "../global.scss";
 import { NotificationManager } from "react-notifications";
 

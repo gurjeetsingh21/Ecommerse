@@ -11,6 +11,7 @@
     "formik": "^2.2.6",
     "node-sass": "4.14.1",
     "react": "^17.0.1",
+    "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.1",
     "react-feather": "^2.0.9",
     "react-notifications": "^1.7.2",
