@@ -1,3 +1,4 @@
+@import "./assets/css/css-variables.css";
 body {
   font-family: "Nunito Sans", sans-serif !important;
   font-size: 0.875rem !important;
@@ -16,7 +17,7 @@ body {
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 1px;
-    color: #742506d7;
+    color: var(--THEME-TEXT-COLOR);
   }
   .input-group-text {
     display: flex;
@@ -37,7 +38,7 @@ body {
     }
   }
   .auth-page-sidebar {
-    // background-image: url(./assets/img2.png);
+    background-image: url(./assets/img/banner.png);
     margin: 50px 55px 0px 0px;
     padding: 0;
     background-repeat: no-repeat;
@@ -55,28 +56,16 @@ body {
       right: 0;
     }
   }
-  .btn-primary,
-  .btn-primary:hover,
-  .btn-primary:active,
-  .btn-primary:visited {
-    color: #fff;
-    background-color: #742506d7;
-    border-color: #641f03;
-    margin-top: 30px;
-  }
   .navbar-custom {
-    // padding: 0 22px 0 37px;
-    // position: fixed;
-    // top: 0px;
-    // left: 0px;
-    // right: 0px;
-    // height: 72px;
-    // z-index: 100;
     margin-bottom: 20px;
-    background-color: #ffffff;
-    // box-shadow: 0 0.05rem 0.01rem rgb(75 75 90 / 8%);
+    background-color: #29303b;
+    padding: 0.5rem 1rem;
+    .navbar-brand,
+    .nav-link {
+      color: aliceblue;
+    }
   }
-  .item {
-    text-align: center;
+  .error {
+    color: red;
   }
 }

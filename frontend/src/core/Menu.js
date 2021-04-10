@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Nav, NavItem, NavLink } from "reactstrap";
+import { Nav, Navbar, NavbarBrand, NavItem } from "reactstrap";
+import { Container, Row, Col } from "react-bootstrap";
 // import { signout, isAuthenticated } from "../auth";
 // import { itemTotal } from "./cartHelpers";
 
@@ -13,23 +14,40 @@ const isActive = (history, path) => {
 };
 
 const Menu = ({ history }) => (
-  <Nav className="navbar-custom">
-    <NavItem className="item">
-      <Link className="nav-link" to="/">
-        Home
-      </Link>
-    </NavItem>
-    <NavItem className="item">
-      <Link className="nav-link" to="/signin">
-        Signin
-      </Link>
-    </NavItem>
-    <NavItem className="item">
-      <Link className="nav-link" to="/signup">
-        Signup
-      </Link>
-    </NavItem>
-  </Nav>
+  <Container fluid>
+    <Row>
+      <Col xs={12}>
+        <Navbar className="navbar-custom">
+          <NavbarBrand href="/">Book Your Books</NavbarBrand>
+          <Nav>
+            <NavItem className="item">
+              <Link className="nav-link" to="/" style={isActive(history, "/")}>
+                Home
+              </Link>
+            </NavItem>
+            <NavItem className="item">
+              <Link
+                className="nav-link"
+                to="/signin"
+                style={isActive(history, "/signin")}
+              >
+                SignIn
+              </Link>
+            </NavItem>
+            <NavItem className="item">
+              <Link
+                className="nav-link"
+                to="/signup"
+                style={isActive(history, "/signup")}
+              >
+                SignUp
+              </Link>
+            </NavItem>
+          </Nav>
+        </Navbar>
+      </Col>
+    </Row>
+  </Container>
 );
 
 export default withRouter(Menu);
