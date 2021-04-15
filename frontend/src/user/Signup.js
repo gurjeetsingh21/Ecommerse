@@ -10,18 +10,17 @@ import {
   Label,
   FormGroup,
   Button,
-  Alert,
   InputGroup,
   InputGroupAddon,
-  InputGroupText,
   Input,
 } from "reactstrap";
-import logo from "../assets/Logo.png";
-import { Field, Form, Formik, FormikProps } from "formik";
+import { Form, Formik, ErrorMessage } from "formik";
 import { Mail, Lock, User } from "react-feather";
-import { Link } from "react-router-dom";
 import "../global.scss";
 import { NotificationManager } from "react-notifications";
+import COLORS from "../assets/css/CssVariables";
+import { API } from "../config";
+import * as Yup from "yup";
 
 const Signup = () => {
   const history = useHistory();
@@ -52,16 +51,27 @@ const Signup = () => {
                           password: "",
                           name: "",
                         }}
+                        validationSchema={Yup.object().shape({
+                          name: Yup.string().required("Name is required"),
+                          email: Yup.string()
+                            .required("Email is required")
+                            .email("Enter a valid email"),
+                          password: Yup.string()
+                            .required("Password is required")
+                            .min(8, "Minimum 8 characters")
+                            .matches(
+                              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                              "Password Must contain one oppercase, one lowercase, one number and one special case character"
+                            )
+                            .max(20, "Maximum 20 characters"),
+                        })}
                         onSubmit={async (values, actions) => {
                           try {
-                            const response = await axios.post(
-                              "http://localhost:8000/api/signup",
-                              {
-                                name: values.name,
-                                email: values.email,
-                                password: values.password,
-                              }
-                            );
+                            const response = await axios.post(API + "/signup", {
+                              name: values.name,
+                              email: values.email,
+                              password: values.password,
+                            });
                             console.log(response);
                             if (response.data.systemMessageType === "success") {
                               NotificationManager.success(
@@ -101,9 +111,13 @@ const Signup = () => {
                                   name="name"
                                   id="username"
                                   placeholder="Enter your name"
-                                  required
                                 />
                               </InputGroup>
+                              <ErrorMessage
+                                name={"name"}
+                                className="error"
+                                component="div"
+                              />
                             </FormGroup>
                             <FormGroup className="">
                               <Label for="username">Email ID</Label>
@@ -115,16 +129,19 @@ const Signup = () => {
                                 </InputGroupAddon>
                                 <Input
                                   onChange={handleChange}
-                                  type="email"
                                   name="email"
                                   id="username"
                                   placeholder="hello@coderthemes.com"
-                                  required
                                 />
                               </InputGroup>
+                              <ErrorMessage
+                                name={"email"}
+                                className="error"
+                                component="div"
+                              />
                             </FormGroup>
 
-                            <FormGroup className="">
+                            <FormGroup className="mb-3">
                               <Label for="password">Password</Label>
                               {/* <Link
                               to="/account/forget-password"
@@ -132,7 +149,7 @@ const Signup = () => {
                             >
                               Forgot your password?
                             </Link> */}
-                              <InputGroup className="mb-3">
+                              <InputGroup>
                                 <InputGroupAddon addonType="prepend">
                                   <span className="input-group-text">
                                     <Lock className="icon-dual" />
@@ -144,17 +161,23 @@ const Signup = () => {
                                   name="password"
                                   id="password"
                                   placeholder="Enter your password"
-                                  required
                                 />
                               </InputGroup>
+                              <ErrorMessage
+                                name={"password"}
+                                className="error"
+                                component="div"
+                              />
                             </FormGroup>
                             <FormGroup className="form-group mb-0 text-center">
                               <Button
-                                className="btn-block button"
-                                color="primary"
+                                style={{
+                                  background: COLORS.THEME_COLOR,
+                                  width: "100%",
+                                }}
                                 // onClick={this.SuperAdminHandler}
                               >
-                                Log In
+                                Register
                               </Button>
                             </FormGroup>
                           </Form>

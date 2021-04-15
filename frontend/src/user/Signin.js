@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import {
@@ -10,20 +10,22 @@ import {
   Label,
   FormGroup,
   Button,
-  Alert,
   InputGroup,
   InputGroupAddon,
-  InputGroupText,
   Input,
 } from "reactstrap";
-import { Field, Form, Formik, FormikProps } from "formik";
+import { Form, Formik, ErrorMessage } from "formik";
 import { Mail, Lock } from "react-feather";
-import { Link } from "react-router-dom";
+
 import "../global.scss";
 import { NotificationManager } from "react-notifications";
+import COLORS from "../assets/css/CssVariables";
+import { API } from "../config";
+import * as Yup from "yup";
 
 const Signin = () => {
   const history = useHistory();
+  console.log(process.env.REACT_APP_API_URL);
   return (
     <React.Fragment>
       <div className="my-5">
@@ -35,7 +37,6 @@ const Signin = () => {
                   <Row>
                     <Col md={6} className="p-5 position-relative">
                       <div className="mx-auto mb-5">
-                        {/* <img src="./img1.jpg" alt="" height="24" /> */}
                         <h3 className="d-inline align-middle ml-1 text-logo">
                           LOGIN
                         </h3>
@@ -51,19 +52,40 @@ const Signin = () => {
                           email: "",
                           password: "",
                         }}
+                        validationSchema={Yup.object().shape({
+                          email: Yup.string()
+                            .required("Email is required")
+                            .email("Enter a valid email"),
+                          password: Yup.string()
+                            .required("Password is required")
+                            .min(8, "Minimum 8 characters")
+                            .matches(
+                              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                              "Password Must contain one oppercase, one lowercase, one number and one special case character"
+                            )
+                            .max(20, "Maximum 20 characters"),
+                        })}
                         onSubmit={async (values, actions) => {
                           try {
-                            console.log(values);
-                            const response = await axios.post(
-                              "http://localhost:8000/api/signin",
-                              { email: values.email, password: values.password }
-                            );
+                            const response = await axios.post(API + "/signin", {
+                              email: values.email,
+                              password: values.password,
+                            });
                             console.log(response);
                             if (response.data.systemMessageType === "success") {
                               NotificationManager.success(
                                 "You have successfully logged in",
                                 "Success",
                                 3000
+                              );
+                              localStorage.setItem(
+                                "token",
+                                response.data.user.token
+                              );
+                              delete response.data.user.token;
+                              localStorage.setItem(
+                                "user",
+                                JSON.stringify(response.data.user)
                               );
                               history.push("/");
                             } else {
@@ -93,15 +115,18 @@ const Signin = () => {
                                 </InputGroupAddon>
                                 <Input
                                   onChange={handleChange}
-                                  type="email"
                                   name="email"
                                   id="username"
                                   placeholder="hello@coderthemes.com"
-                                  required
                                 />
                               </InputGroup>
+                              <ErrorMessage
+                                name={"email"}
+                                className="error"
+                                component="div"
+                              />
                             </FormGroup>
-                            <FormGroup className="">
+                            <FormGroup className="mb-3">
                               <Label for="password">Password</Label>
                               {/* <Link
                               to="/account/forget-password"
@@ -109,7 +134,7 @@ const Signin = () => {
                             >
                               Forgot your password?
                             </Link> */}
-                              <InputGroup className="mb-3">
+                              <InputGroup>
                                 <InputGroupAddon addonType="prepend">
                                   <span className="input-group-text">
                                     <Lock className="icon-dual" />
@@ -121,14 +146,20 @@ const Signin = () => {
                                   name="password"
                                   id="password"
                                   placeholder="Enter your password"
-                                  required
                                 />
                               </InputGroup>
+                              <ErrorMessage
+                                name={"password"}
+                                className="error"
+                                component="div"
+                              />
                             </FormGroup>
                             <FormGroup className="form-group mb-0 text-center">
                               <Button
-                                className="btn-block button"
-                                color="primary"
+                                style={{
+                                  background: COLORS.THEME_COLOR,
+                                  width: "100%",
+                                }}
                                 // onClick={this.SuperAdminHandler}
                               >
                                 Log In
