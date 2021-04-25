@@ -7,6 +7,7 @@ const {
   update,
   remove,
   list,
+  photo,
 } = require("../controllers/category");
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
@@ -27,8 +28,9 @@ router.delete(
   isAdmin,
   remove
 );
-router.get("/categories", list);
 
+router.get("/categories", list);
+router.get("/category/photo/:categoryId", photo);
 router.param("categoryId", categoryById);
 router.param("userId", userById);
 

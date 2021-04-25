@@ -8,9 +8,11 @@ const categorySchema = new mongoose.Schema(
       required: true,
       maxlength: 32,
     },
+    photo: {
+      data: Buffer,
+      contentType: String,
+    },
   },
   { timestamps: true }
 );
-
-
 module.exports = mongoose.model("Category", categorySchema);

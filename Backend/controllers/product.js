@@ -28,7 +28,7 @@ exports.create = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        SystemMessage: "Image cloud not be uploaded",
+        SystemMessage: "Image could not be uploaded",
         SystemMessageType: "error",
       });
     }
@@ -63,7 +63,7 @@ exports.create = (req, res) => {
     product.save((err, data) => {
       if (err) {
         res.status(400).json({
-          SystemMessage: errorHandler(err),
+          SystemMessage: err,
           SystemMessageType: "error",
         });
       }
@@ -98,7 +98,7 @@ exports.update = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        SystemMessage: "Image cloud not be uploaded",
+        SystemMessage: "Image could not be uploaded",
         SystemMessageType: "error",
       });
     }
@@ -161,7 +161,7 @@ exports.list = (req, res) => {
 
   Product.find()
     .select("-photo")
-    .populate("category")
+    .populate("category", "_id name")
     .sort([[sortBy, order]])
     .limit(limit)
     .exec((err, data) => {

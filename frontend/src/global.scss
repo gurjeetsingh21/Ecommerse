@@ -6,7 +6,7 @@ body {
   line-height: 1.5 !important;
   color: #6c757d !important;
   text-align: left !important;
-  background-color: #f3f4f7 !important;
+  background-color: #131921 !important;
   label {
     font-weight: 600;
   }
@@ -57,15 +57,25 @@ body {
     }
   }
   .navbar-custom {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     background-color: #29303b;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.5rem;
     .navbar-brand,
     .nav-link {
       color: aliceblue;
+      font-size: large;
+      font-weight: 500;
     }
+    height: 70px;
   }
   .error {
     color: red;
+  }
+  .thumbs {
+    text-align: center;
+    padding: 0px;
+  }
+  .carousel-status {
+    visibility: hidden;
   }
 }

@@ -15,6 +15,7 @@
     "react-dom": "^17.0.1",
     "react-feather": "^2.0.9",
     "react-notifications": "^1.7.2",
+    "react-responsive-carousel": "^3.2.18",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "reactstrap": "^8.9.0",

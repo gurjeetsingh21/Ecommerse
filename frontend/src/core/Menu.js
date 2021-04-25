@@ -6,6 +6,7 @@ import axios from "axios";
 import { API } from "../config";
 import { NotificationManager } from "react-notifications";
 import { isAuthenticated } from "../auth";
+import NavbarLogo from "../assets/img/Capture.PNG";
 // import { signout, isAuthenticated } from "../auth";
 // import { itemTotal } from "./cartHelpers";
 
@@ -41,58 +42,46 @@ const Menu = ({ history }) => {
     }
   };
   return (
-    <Container fluid>
-      <Row>
-        <Col xs={12}>
-          <Navbar className="navbar-custom">
-            <NavbarBrand href="/">Book Your Books</NavbarBrand>
-            <Nav>
-              <NavItem className="item">
-                <Link
-                  className="nav-link"
-                  to="/"
-                  style={isActive(history, "/")}
-                >
-                  Home
-                </Link>
-              </NavItem>
-              {!isAuthenticated() ? (
-                <>
-                  <NavItem className="item">
-                    <Link
-                      className="nav-link"
-                      to="/signin"
-                      style={isActive(history, "/signin")}
-                    >
-                      SignIn
-                    </Link>
-                  </NavItem>
-                  <NavItem className="item">
-                    <Link
-                      className="nav-link"
-                      to="/signup"
-                      style={isActive(history, "/signup")}
-                    >
-                      SignUp
-                    </Link>
-                  </NavItem>
-                </>
-              ) : (
-                <NavItem className="item">
-                  <Link
-                    className="nav-link"
-                    to="/signin"
-                    onClick={handleSignOut}
-                  >
-                    SignOut
-                  </Link>
-                </NavItem>
-              )}
-            </Nav>
-          </Navbar>
-        </Col>
-      </Row>
-    </Container>
+    <Navbar className="navbar-custom">
+      <NavbarBrand href="/">
+        <img src={NavbarLogo} height="50px" />
+      </NavbarBrand>
+      <Nav>
+        <NavItem className="item">
+          <Link className="nav-link" to="/" style={isActive(history, "/")}>
+            Home
+          </Link>
+        </NavItem>
+        {!isAuthenticated() ? (
+          <>
+            <NavItem className="item">
+              <Link
+                className="nav-link"
+                to="/signin"
+                style={isActive(history, "/signin")}
+              >
+                Sign In
+              </Link>
+            </NavItem>
+            <NavItem className="item">
+              <Link
+                className="nav-link"
+                to="/signup"
+                style={isActive(history, "/signup")}
+              >
+                Sign Up
+              </Link>
+            </NavItem>
+          </>
+        ) : (
+          <NavItem className="item">
+            <Link className="nav-link" to="/signin" onClick={handleSignOut}>
+              SignOut
+            </Link>
+          </NavItem>
+        )}
+      </Nav>
+    </Navbar>
   );
 };
 

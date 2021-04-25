@@ -30,7 +30,7 @@ const productSchema = new mongoose.Schema(
     },
     sold: {
       type: Number,
-      deault: 0
+      deault: 0,
     },
     photo: {
       data: Buffer,
