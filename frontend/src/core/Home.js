@@ -28,9 +28,9 @@ const Home = () => {
             autoPlay={true}
             infiniteLoop={true}
             showThumbs={false}
-            transitionTime={2000}
+            transitionTime={3000}
             stopOnHover={true}
-            interval={5000}
+            interval={5500}
           >
             <div>
               <img src={banner1} />
@@ -45,7 +45,7 @@ const Home = () => {
           <Container style={{ marginTop: 20 }}>
             <Row style={{ marginBottom: 20 }}>
               {categories.map((category) => (
-                <Col sm={4}>
+                <Col style={{ marginBottom: 30 }} sm={4}>
                   <Card
                     style={{
                       height: 200,
@@ -60,7 +60,7 @@ const Home = () => {
                         style={{
                           height: "100%",
                           backgroundSize: "contain",
-                          opacity: 0.3,
+                          opacity: 0.5,
                         }}
                       />
                     </div>
