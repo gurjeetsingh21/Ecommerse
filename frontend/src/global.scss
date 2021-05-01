@@ -1,4 +1,5 @@
 @import "./assets/css/css-variables.css";
+
 body {
   font-family: 'Averia Serif Libre', cursive !important;
   font-size: 0.875 rem !important;
@@ -7,18 +8,22 @@ body {
   color: #6c757d !important;
   text-align: left !important;
   background-color: #131921 !important;
+
   label {
     font-weight: 600;
   }
+
   .h5 {
     color: #4b4b5a;
   }
+
   .text-logo {
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 1px;
     color: var(--THEME-TEXT-COLOR);
   }
+
   .input-group-text {
     display: flex;
     align-items: center;
@@ -32,11 +37,13 @@ body {
     background-color: transparent;
     border: 1px solid #e2e7f1;
     border-radius: 0.3rem;
+
     .icon-dual {
       color: #6c757d;
       fill: rgba(108, 117, 125, 0.12);
     }
   }
+
   .auth-page-sidebar {
     background-image: url(./assets/img/banner.png);
     margin: 50px 55px 0px 0px;
@@ -45,6 +52,7 @@ body {
     background-size: contain;
     height: 100%;
     position: relative;
+
     .auth-user-testimonial {
       text-align: center;
       color: black;
@@ -56,25 +64,31 @@ body {
       right: 0;
     }
   }
+
   .navbar-custom {
     margin-bottom: 5px;
     background-color: #29303b;
     padding: 0.5rem 1.5rem;
+
     .navbar-brand,
     .nav-link {
       color: aliceblue;
-      font-size: x-large;
+      font-size: larger;
       font-weight: 500;
     }
+
     height: 70px;
   }
+
   .error {
     color: red;
   }
+
   .thumbs {
     text-align: center;
     padding: 0px;
   }
+
   .carousel-status {
     visibility: hidden;
   }
