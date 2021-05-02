@@ -15,10 +15,12 @@
     "react-dom": "^17.0.1",
     "react-feather": "^2.0.9",
     "react-notifications": "^1.7.2",
+    "react-rangeslider": "^2.2.0",
     "react-responsive-carousel": "^3.2.18",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "reactstrap": "^8.9.0",
+    "read-more-react": "^1.0.10",
     "web-vitals": "^0.2.4",
     "yup": "^0.32.9"
   },

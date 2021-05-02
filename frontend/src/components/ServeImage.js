@@ -3,13 +3,14 @@ import { API } from "../config";
 
 const ServeImage = ({ item, type, style }) => {
   return (
-    <div
-      className="category-image"
-      style={{
-        background: `url(${API}/${type}/photo/${item._id})`,
-        ...style,
-      }}
-    ></div>
+    <div className="product-image">
+      <img
+        src={`${API}/${type}/photo/${item._id}`}
+        style={{
+          ...style,
+        }}
+      />
+    </div>
   );
 };
 

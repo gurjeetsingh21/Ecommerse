@@ -8,12 +8,14 @@ const {
   update,
   list,
   listRelated,
-  listCategories, 
+  listCategories,
   listBySearch,
-  photo
+  photo,
+  getProductsByCategory,
 } = require("../controllers/product");
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
+const { categoryById } = require("../controllers/category");
 
 router.get("/product/:productId", read);
 router.post("/product/create/:userId", requireSignin, isAuth, isAdmin, create);
@@ -34,11 +36,13 @@ router.put(
 );
 
 router.get("/products", list);
-router.get("/product/related/:productId", listRelated)
-router.get("/products/categories", listCategories)
-router.get("/product/photo/:productId",photo)
+router.get("/product/related/:productId", listRelated);
+router.get("/products/categories", listCategories);
+router.get("/product/photo/:productId", photo);
+router.get("/products/category/:categoryId", getProductsByCategory);
 
 router.param("userId", userById);
 router.param("productId", productById);
+router.param("categoryId", categoryById);
 
 module.exports = router;

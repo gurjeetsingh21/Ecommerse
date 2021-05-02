@@ -1,7 +1,7 @@
 @import "./assets/css/css-variables.css";
 body {
-  font-family: 'Averia Serif Libre', cursive !important;
-  font-size: 0.875 rem !important;
+  font-family: "Averia Serif Libre", cursive !important;
+  font-size: 0.875rem !important;
   font-weight: 400 !important;
   line-height: 1.5 !important;
   color: #6c757d !important;
@@ -66,7 +66,7 @@ body {
       font-size: x-large;
       font-weight: 500;
     }
-    height: 70px;
+    // height: 70px;
   }
   .error {
     color: red;
@@ -77,5 +77,54 @@ body {
   }
   .carousel-status {
     visibility: hidden;
+  }
+  .product-by-category-heading {
+    color: white;
+    text-align: center;
+    font-size: 4rem;
+    margin: 0;
+  }
+  .product-image {
+    height: 300px;
+  }
+  .product-name {
+    color: black;
+    font-weight: bold;
+    font-size: 2.3rem;
+    margin: 0;
+  }
+  .product-author {
+    font-size: 1.2rem;
+    margin-bottom: 7px;
+  }
+  .product-price {
+    font-size: 1.7rem;
+    color: black;
+    margin-top: 4px;
+  }
+  .product-decription {
+    text-align: justify;
+    color: black;
+    font-size: 1rem;
+  }
+  .product-description-heading {
+    color: black;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+  .read-more-button {
+    color: #6c757d;
+  }
+  .rangeslider__fill {
+    background-color: var(--THEME-TEXT-COLOR) !important;
+  }
+  .rangeslider-horizontal {
+    height: 7px;
+  }
+
+  .filter-heading {
+    color: white;
+    margin: 0;
+    text-align: center;
   }
 }

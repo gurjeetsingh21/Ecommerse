@@ -22,6 +22,21 @@ exports.read = (req, res) => {
   return res.send(req.product);
 };
 
+exports.getProductsByCategory = (req, res) => {
+  Product.find({ category: { _id: req.category._id, name: req.category.name } })
+    .select("-photo")
+    .populate("category", "_id name")
+    .exec((err, products) => {
+      if (err) {
+        return res.status(400).json({
+          systemMessage: "Product not found",
+          systemMessageType: "error",
+        });
+      }
+      res.send(products);
+    });
+};
+
 exports.create = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;

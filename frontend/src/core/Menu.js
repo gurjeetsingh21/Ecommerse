@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Nav, Navbar, NavbarBrand, NavItem } from "reactstrap";
-import { Container, Row, Col } from "react-bootstrap";
+import { Nav, NavbarBrand, NavItem } from "reactstrap";
+import { Navbar } from "react-bootstrap";
 import axios from "axios";
 import { API } from "../config";
 import { NotificationManager } from "react-notifications";
@@ -24,7 +24,7 @@ const Menu = ({ history }) => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       const response = await axios.get(API + "/signout");
-      if (response.data.systemMessageType == "success") {
+      if (response.data.systemMessageType === "success") {
         NotificationManager.success(
           "You have successfully logged out",
           "Success",
@@ -42,45 +42,60 @@ const Menu = ({ history }) => {
     }
   };
   return (
-    <Navbar className="navbar-custom">
+    <Navbar
+      collapseOnSelect
+      expand="lg"
+      variant="dark"
+      className="navbar-custom"
+    >
       <NavbarBrand href="/">
         <img src={NavbarLogo} height="50px" />
       </NavbarBrand>
-      <Nav>
-        <NavItem className="item">
-          <Link className="nav-link" to="/" style={isActive(history, "/")}>
-            Home
-          </Link>
-        </NavItem>
-        {!isAuthenticated() ? (
-          <>
-            <NavItem className="item">
-              <Link
-                className="nav-link"
-                to="/signin"
-                style={isActive(history, "/signin")}
-              >
-                Sign In
-              </Link>
-            </NavItem>
-            <NavItem className="item">
-              <Link
-                className="nav-link"
-                to="/signup"
-                style={isActive(history, "/signup")}
-              >
-                Sign Up
-              </Link>
-            </NavItem>
-          </>
-        ) : (
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Collapse
+        id="responsive-navbar-nav"
+        style={{ justifyContent: "flex-end" }}
+      >
+        <Nav>
           <NavItem className="item">
-            <Link className="nav-link" to="/signin" onClick={handleSignOut}>
-              SignOut
+            <Link
+              className="nav-link"
+              to="/home"
+              style={isActive(history, "/home")}
+            >
+              Home
             </Link>
           </NavItem>
-        )}
-      </Nav>
+          {!isAuthenticated() ? (
+            <>
+              <NavItem className="item">
+                <Link
+                  className="nav-link"
+                  to="/signin"
+                  style={isActive(history, "/signin")}
+                >
+                  Sign In
+                </Link>
+              </NavItem>
+              <NavItem className="item">
+                <Link
+                  className="nav-link"
+                  to="/signup"
+                  style={isActive(history, "/signup")}
+                >
+                  Sign Up
+                </Link>
+              </NavItem>
+            </>
+          ) : (
+            <NavItem className="item">
+              <Link className="nav-link" to="/signin" onClick={handleSignOut}>
+                SignOut
+              </Link>
+            </NavItem>
+          )}
+        </Nav>
+      </Navbar.Collapse>
     </Navbar>
   );
 };
