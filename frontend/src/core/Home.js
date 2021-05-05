@@ -43,6 +43,11 @@ const Home = ({ history }) => {
             </div>
           </Carousel>
           <Container style={{ marginTop: 20 }}>
+            <Row>
+              <Col sm={12}>
+                <h1 className="home-category-heading">Categories</h1>
+              </Col>
+            </Row>
             <Row style={{ marginBottom: 20 }}>
               {categories.map((category, index) => (
                 <Col key={index} style={{ marginBottom: 30 }} sm={4}>

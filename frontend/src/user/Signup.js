@@ -52,7 +52,12 @@ const Signup = () => {
                           name: "",
                         }}
                         validationSchema={Yup.object().shape({
-                          name: Yup.string().required("Name is required"),
+                          name: Yup.string()
+                            .required("Name is required")
+                            .matches(
+                              /^[A-Za-z]+$/,
+                              "Name must only contain alphabets"
+                            ),
                           email: Yup.string()
                             .required("Email is required")
                             .email("Enter a valid email"),

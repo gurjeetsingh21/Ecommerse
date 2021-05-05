@@ -6,6 +6,7 @@ import Home from "./core/Home";
 import Menu from "./core/Menu";
 import { NotificationContainer } from "react-notifications";
 import ProductsByCategory from "./core/ProductsByCategory";
+import Footer from "./core/Footer";
 
 const Routes = () => {
   return (
@@ -22,6 +23,7 @@ const Routes = () => {
         />
         <Redirect from="/" to="/home" />
       </Switch>
+      <Footer />
       <NotificationContainer />
     </BrowserRouter>
   );

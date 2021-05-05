@@ -73,7 +73,7 @@ body {
     .navbar-brand,
     .nav-link {
       color: aliceblue;
-      font-size: larger;
+      font-size: x-large;
       font-weight: 500;
     }
     // height: 70px;
@@ -134,10 +134,21 @@ body {
   .rangeslider-horizontal {
     height: 7px;
   }
-
+  .home-category-heading {
+    color: white;
+    text-align: center;
+    font-size: 4rem;
+    margin-bottom: 15px;
+  }
   .filter-heading {
     color: white;
     margin: 0;
     text-align: center;
+  }
+  .footer {
+    color: white;
+  }
+  .footer-heading {
+    color: #f7979a;
   }
 }

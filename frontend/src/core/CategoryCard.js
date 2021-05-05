@@ -10,6 +10,7 @@ const CategoryCard = ({ history, category }) => {
         height: 200,
         boxShadow: "0px 0px 6px 3px #f3f4f7",
         justifyContent: "center",
+        cursor: "pointer",
       }}
       onClick={() => history.push(`/product/${category._id}`, { category })}
     >
