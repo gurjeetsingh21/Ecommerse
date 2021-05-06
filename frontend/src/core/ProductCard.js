@@ -5,7 +5,6 @@ import { Button } from "reactstrap";
 import ServeImage from "../components/ServeImage";
 import ReadMoreReact from "read-more-react";
 import COLORS from "../assets/css/CssVariables";
-import GooglePayButton from "@google-pay/button-react";
 
 const ProductCard = ({ history, product }) => {
   return (
@@ -62,7 +61,29 @@ const ProductCard = ({ history, product }) => {
                   <Button style={{ background: COLORS.THEME_COLOR }}>
                     Add to Cart
                   </Button>
-                  <GooglePayButton
+                  <Button
+                    style={{
+                      background: COLORS.THEME_COLOR,
+                      marginLeft: 10,
+                      width: 110,
+                    }}
+                  >
+                    Buy Now
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+    </React.Fragment>
+  );
+};
+
+export default withRouter(ProductCard);
+
+{
+  /* <GooglePayButton
                     environment="PRODUCTION"
                     paymentRequest={{
                       apiVersion: 2,
@@ -83,8 +104,8 @@ const ProductCard = ({ history, product }) => {
                         },
                       ],
                       merchantInfo: {
-                        merchantId: "12345678901234567890",
-                        merchantName: "Demo Merchant",
+                        merchantId: "BCR2DN6TV7L4FCY7",
+                        merchantName: "Book Your Books",
                       },
                       transactionInfo: {
                         totalPriceStatus: "FINAL",
@@ -97,15 +118,5 @@ const ProductCard = ({ history, product }) => {
                     onLoadPaymentData={(paymentRequest) => {
                       console.log("load payment data", paymentRequest);
                     }}
-                  />
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-    </React.Fragment>
-  );
-};
-
-export default withRouter(ProductCard);
+                  /> */
+}
