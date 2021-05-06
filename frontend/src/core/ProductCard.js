@@ -5,6 +5,7 @@ import { Button } from "reactstrap";
 import ServeImage from "../components/ServeImage";
 import ReadMoreReact from "read-more-react";
 import COLORS from "../assets/css/CssVariables";
+import GooglePayButton from "@google-pay/button-react";
 
 const ProductCard = ({ history, product }) => {
   return (
@@ -61,15 +62,42 @@ const ProductCard = ({ history, product }) => {
                   <Button style={{ background: COLORS.THEME_COLOR }}>
                     Add to Cart
                   </Button>
-                  <Button
-                    style={{
-                      background: COLORS.THEME_COLOR,
-                      marginLeft: 10,
-                      width: 110,
+                  <GooglePayButton
+                    environment="PRODUCTION"
+                    paymentRequest={{
+                      apiVersion: 2,
+                      apiVersionMinor: 0,
+                      allowedPaymentMethods: [
+                        {
+                          type: "CARD",
+                          parameters: {
+                            allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                            allowedCardNetworks: ["MASTERCARD", "VISA"],
+                          },
+                          tokenizationSpecification: {
+                            type: "PAYMENT_GATEWAY",
+                            parameters: {
+                              gateway: "example",
+                            },
+                          },
+                        },
+                      ],
+                      merchantInfo: {
+                        merchantId: "12345678901234567890",
+                        merchantName: "Demo Merchant",
+                      },
+                      transactionInfo: {
+                        totalPriceStatus: "FINAL",
+                        totalPriceLabel: "Total",
+                        totalPrice: `${product.price}`,
+                        currencyCode: "IND",
+                        countryCode: "IN",
+                      },
                     }}
-                  >
-                    Buy Now
-                  </Button>
+                    onLoadPaymentData={(paymentRequest) => {
+                      console.log("load payment data", paymentRequest);
+                    }}
+                  />
                 </Col>
               </Row>
             </Col>
