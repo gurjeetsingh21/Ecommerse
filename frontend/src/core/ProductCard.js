@@ -5,8 +5,35 @@ import { Button } from "reactstrap";
 import ServeImage from "../components/ServeImage";
 import ReadMoreReact from "read-more-react";
 import COLORS from "../assets/css/CssVariables";
+import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
+import { API } from "../config";
 
 const ProductCard = ({ history, product }) => {
+  const stripePromise = loadStripe(
+    "pk_test_51IvQ82SJVrKhBkqWxEocQARZw4voqqtkfVzX4R2ln44Fn7Ym8cqU1mXu52AbEnsCTp5x8duhldLbeJPzv0gZ3Pnj00wg2A54tP"
+  );
+  const handleClick = async (product) => {
+    // Get Stripe.js instance
+    const stripe = await stripePromise;
+
+    // Call your backend to create the Checkout Session
+    const response = await axios.post(`${API}/payment`, { product: product });
+    console.log(response);
+
+    const session = response.data;
+
+    // When the customer clicks on the button, redirect them to Checkout.
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+
+    if (result.error) {
+      // If `redirectToCheckout` fails due to a browser or network
+      // error, display the localized error message to your customer
+      // using `result.error.message`.
+    }
+  };
   return (
     <React.Fragment>
       <Card
@@ -67,6 +94,7 @@ const ProductCard = ({ history, product }) => {
                       marginLeft: 10,
                       width: 110,
                     }}
+                    onClick={() => handleClick(product)}
                   >
                     Buy Now
                   </Button>
@@ -81,42 +109,3 @@ const ProductCard = ({ history, product }) => {
 };
 
 export default withRouter(ProductCard);
-
-{
-  /* <GooglePayButton
-                    environment="PRODUCTION"
-                    paymentRequest={{
-                      apiVersion: 2,
-                      apiVersionMinor: 0,
-                      allowedPaymentMethods: [
-                        {
-                          type: "CARD",
-                          parameters: {
-                            allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-                            allowedCardNetworks: ["MASTERCARD", "VISA"],
-                          },
-                          tokenizationSpecification: {
-                            type: "PAYMENT_GATEWAY",
-                            parameters: {
-                              gateway: "example",
-                            },
-                          },
-                        },
-                      ],
-                      merchantInfo: {
-                        merchantId: "BCR2DN6TV7L4FCY7",
-                        merchantName: "Book Your Books",
-                      },
-                      transactionInfo: {
-                        totalPriceStatus: "FINAL",
-                        totalPriceLabel: "Total",
-                        totalPrice: `${product.price}`,
-                        currencyCode: "IND",
-                        countryCode: "IN",
-                      },
-                    }}
-                    onLoadPaymentData={(paymentRequest) => {
-                      console.log("load payment data", paymentRequest);
-                    }}
-                  /> */
-}

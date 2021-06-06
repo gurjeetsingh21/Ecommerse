@@ -21,6 +21,7 @@ const Routes = () => {
           path="/product/:categoryId"
           component={ProductsByCategory}
         />
+
         <Redirect from="/" to="/home" />
       </Switch>
       <Footer />

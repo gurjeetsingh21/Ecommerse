@@ -15,6 +15,7 @@ const Home = ({ history }) => {
 
   useEffect(() => {
     async function fetchData() {
+      console.log(API);
       const response = await axios.get(`${API}/categories`);
       setCategories(response.data);
     }
