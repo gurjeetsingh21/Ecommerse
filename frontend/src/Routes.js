@@ -7,6 +7,9 @@ import Menu from "./core/Menu";
 import { NotificationContainer } from "react-notifications";
 import ProductsByCategory from "./core/ProductsByCategory";
 import Footer from "./core/Footer";
+import SuccessfulPayment from "./core/SuccessfulPayment";
+import Cart from "./core/Cart";
+import FailedPayment from "./core/FailedPayment";
 
 const Routes = () => {
   return (
@@ -21,7 +24,9 @@ const Routes = () => {
           path="/product/:categoryId"
           component={ProductsByCategory}
         />
-
+        <Route exact path="/checkout/success" component={SuccessfulPayment} />
+        <Route exact path="/checkout/failed" component={FailedPayment} />
+        <Route exact path="/cart" component={Cart} />
         <Redirect from="/" to="/home" />
       </Switch>
       <Footer />

@@ -7,6 +7,7 @@ import { API } from "../config";
 import { NotificationManager } from "react-notifications";
 import { isAuthenticated } from "../auth";
 import NavbarLogo from "../assets/img/Capture.PNG";
+import { HiShoppingCart } from "react-icons/hi";
 // import { signout, isAuthenticated } from "../auth";
 // import { itemTotal } from "./cartHelpers";
 
@@ -23,6 +24,7 @@ const Menu = ({ history }) => {
     try {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      localStorage.removeItem("cart");
       const response = await axios.get(API + "/signout");
       if (response.data.systemMessageType === "success") {
         NotificationManager.success(
@@ -88,11 +90,18 @@ const Menu = ({ history }) => {
               </NavItem>
             </>
           ) : (
-            <NavItem className="item">
-              <Link className="nav-link" to="/signin" onClick={handleSignOut}>
-                SignOut
-              </Link>
-            </NavItem>
+            <>
+              <NavItem className="item">
+                <Link className="nav-link" to="/signin" onClick={handleSignOut}>
+                  SignOut
+                </Link>
+              </NavItem>
+              <NavItem className="item">
+                <Link className="nav-link" to="/cart">
+                  <HiShoppingCart fill="white" size={30} />
+                </Link>
+              </NavItem>
+            </>
           )}
         </Nav>
       </Navbar.Collapse>

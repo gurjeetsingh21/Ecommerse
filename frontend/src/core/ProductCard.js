@@ -8,17 +8,21 @@ import COLORS from "../assets/css/CssVariables";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { API } from "../config";
+import { NotificationManager } from "react-notifications";
 
-const ProductCard = ({ history, product }) => {
+const ProductCard = ({ history, product, location }) => {
   const stripePromise = loadStripe(
     "pk_test_51IvQ82SJVrKhBkqWxEocQARZw4voqqtkfVzX4R2ln44Fn7Ym8cqU1mXu52AbEnsCTp5x8duhldLbeJPzv0gZ3Pnj00wg2A54tP"
   );
-  const handleClick = async (product) => {
+
+  const handleBuyNow = async (product) => {
     // Get Stripe.js instance
     const stripe = await stripePromise;
 
     // Call your backend to create the Checkout Session
-    const response = await axios.post(`${API}/payment`, { product: product });
+    const response = await axios.post(`${API}/payment/${product._id}`, {
+      product: product,
+    });
     console.log(response);
 
     const session = response.data;
@@ -32,8 +36,40 @@ const ProductCard = ({ history, product }) => {
       // If `redirectToCheckout` fails due to a browser or network
       // error, display the localized error message to your customer
       // using `result.error.message`.
+      history.push("/checkout/failed");
     }
   };
+
+  const handleAddToCart = (product) => {
+    let cart = [];
+    if (typeof window !== "undefined") {
+      if (localStorage.getItem("cart")) {
+        cart = JSON.parse(localStorage.getItem("cart"));
+        cart.push({
+          ...product,
+          count: 1,
+        });
+        cart = Array.from(new Set(cart.map((p) => p._id))).map((id) =>
+          cart.find((p) => p._id === id)
+        );
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        NotificationManager.success(
+          "Item has been added to your cart",
+          "Success",
+          3000
+        );
+      } else {
+        history.push("/signin");
+        NotificationManager.info(
+          "Please log in for adding item to cart",
+          "Info",
+          3000
+        );
+      }
+    }
+  };
+
   return (
     <React.Fragment>
       <Card
@@ -85,16 +121,29 @@ const ProductCard = ({ history, product }) => {
                   )}`}</div>
                 </Col>
                 <Col style={{ marginTop: 5 }}>
-                  <Button style={{ background: COLORS.THEME_COLOR }}>
-                    Add to Cart
-                  </Button>
+                  {location.pathname === "/cart" ? null : (
+                    <Button
+                      style={{ background: COLORS.THEME_COLOR }}
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      Add to Cart
+                    </Button>
+                  )}
                   <Button
-                    style={{
-                      background: COLORS.THEME_COLOR,
-                      marginLeft: 10,
-                      width: 110,
-                    }}
-                    onClick={() => handleClick(product)}
+                    style={
+                      location.pathname === "/cart"
+                        ? {
+                            background: COLORS.THEME_COLOR,
+
+                            width: 110,
+                          }
+                        : {
+                            background: COLORS.THEME_COLOR,
+                            marginLeft: 10,
+                            width: 110,
+                          }
+                    }
+                    onClick={() => handleBuyNow(product)}
                   >
                     Buy Now
                   </Button>

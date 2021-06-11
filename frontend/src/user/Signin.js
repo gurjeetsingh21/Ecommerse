@@ -87,6 +87,7 @@ const Signin = () => {
                                 "user",
                                 JSON.stringify(response.data.user)
                               );
+                              localStorage.setItem("cart", JSON.stringify([]));
                               history.push("/");
                             } else {
                               NotificationManager.error(
