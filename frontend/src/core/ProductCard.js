@@ -7,15 +7,13 @@ import ReadMoreReact from "read-more-react";
 import COLORS from "../assets/css/CssVariables";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
-import { API } from "../config";
+import { API, PK } from "../config";
 import { NotificationManager } from "react-notifications";
 import { AppStateContext } from "../context/AppStateProvider";
 
 const ProductCard = ({ history, product, location }) => {
   const { setCartChanged } = useContext(AppStateContext);
-  const stripePromise = loadStripe(
-    "pk_live_51IvQ82SJVrKhBkqWXqzV8G8jNcVYfi1DO45OOr3nmTq5y6xVTOqhzljtM28gwyEMvp8HzLVdMBcPDbmNZTnkpP8K00B3Rhy7Gy"
-  );
+  const stripePromise = loadStripe(PK);
 
   const handleBuyNow = async (product) => {
     // Get Stripe.js instance

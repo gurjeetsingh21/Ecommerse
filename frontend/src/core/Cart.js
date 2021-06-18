@@ -9,16 +9,14 @@ import { Button } from "reactstrap";
 import COLORS from "../assets/css/CssVariables";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
-import { API } from "../config";
+import { API, PK } from "../config";
 
 const Cart = ({ history }) => {
   const [products, setProducts] = useState(null);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [volume, setVolume] = useState(0);
   const { cartChanged, setCartChanged } = useContext(AppStateContext);
-  const stripePromise = loadStripe(
-    "pk_live_51IvQ82SJVrKhBkqWXqzV8G8jNcVYfi1DO45OOr3nmTq5y6xVTOqhzljtM28gwyEMvp8HzLVdMBcPDbmNZTnkpP8K00B3Rhy7Gy"
-  );
+  const stripePromise = loadStripe(PK);
 
   useEffect(() => {
     console.log("cart updated in database");

@@ -1,6 +1,4 @@
-const stripe = require("stripe")(
-  "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"
-);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const fs = require("fs");
 
 exports.payment = async (req, res) => {
