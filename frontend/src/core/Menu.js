@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Nav, NavbarBrand, NavItem } from "reactstrap";
 import { Navbar } from "react-bootstrap";
@@ -8,23 +8,25 @@ import { NotificationManager } from "react-notifications";
 import { isAuthenticated } from "../auth";
 import NavbarLogo from "../assets/img/Capture.PNG";
 import { HiShoppingCart } from "react-icons/hi";
-// import { signout, isAuthenticated } from "../auth";
-// import { itemTotal } from "./cartHelpers";
+import { AppStateContext } from "../context/AppStateProvider";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) {
-    return { color: "#ff9900" };
+    return "#ff9900";
   } else {
-    return { color: "#ffffff" };
+    return "aliceblue";
   }
 };
 
 const Menu = ({ history }) => {
+  const [cartItems, setCartItems] = useState(0);
+  const { cartChanged, setCartChanged } = useContext(AppStateContext);
   const handleSignOut = async () => {
     try {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("cart");
+      setCartItems(0);
       const response = await axios.get(API + "/signout");
       if (response.data.systemMessageType === "success") {
         NotificationManager.success(
@@ -43,6 +45,34 @@ const Menu = ({ history }) => {
       );
     }
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (localStorage.getItem("cart")) {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        console.log(cart);
+        setCartItems(cart.length);
+        if (cartChanged) {
+          const user = JSON.parse(localStorage.getItem("user"));
+          user.history[0].cart = cart;
+          localStorage.setItem("user", JSON.stringify(user));
+          console.log({ history: [...user.history] });
+          axios.put(
+            `${API}/user/${user._id}`,
+            { history: [...user.history] },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          console.log("cart updated in database");
+        }
+      }
+    }
+    setCartChanged(false);
+  }, [[], cartChanged]);
+
   return (
     <Navbar
       collapseOnSelect
@@ -63,7 +93,7 @@ const Menu = ({ history }) => {
             <Link
               className="nav-link"
               to="/home"
-              style={isActive(history, "/home")}
+              style={{ color: isActive(history, "/home") }}
             >
               Home
             </Link>
@@ -74,7 +104,7 @@ const Menu = ({ history }) => {
                 <Link
                   className="nav-link"
                   to="/signin"
-                  style={isActive(history, "/signin")}
+                  style={{ color: isActive(history, "/signin") }}
                 >
                   Sign In
                 </Link>
@@ -83,7 +113,7 @@ const Menu = ({ history }) => {
                 <Link
                   className="nav-link"
                   to="/signup"
-                  style={isActive(history, "/signup")}
+                  style={{ color: isActive(history, "/signup") }}
                 >
                   Sign Up
                 </Link>
@@ -91,14 +121,34 @@ const Menu = ({ history }) => {
             </>
           ) : (
             <>
+              {JSON.parse(localStorage.getItem("user")).role === 1 && (
+                <NavItem className="item">
+                  <Link
+                    className="nav-link"
+                    to="/admin/dashboard"
+                    style={{ color: isActive(history, "/admin/dashboard") }}
+                  >
+                    Dashboard
+                  </Link>
+                </NavItem>
+              )}
               <NavItem className="item">
                 <Link className="nav-link" to="/signin" onClick={handleSignOut}>
                   SignOut
                 </Link>
               </NavItem>
+
               <NavItem className="item">
                 <Link className="nav-link" to="/cart">
-                  <HiShoppingCart fill="white" size={30} />
+                  <HiShoppingCart fill={isActive(history, "/cart")} size={30} />
+                  <sup>
+                    <small
+                      style={{ color: isActive(history, "/cart") }}
+                      className="cart-badge"
+                    >
+                      {cartItems}
+                    </small>
+                  </sup>
                 </Link>
               </NavItem>
             </>

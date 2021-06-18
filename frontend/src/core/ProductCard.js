@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { withRouter } from "react-router";
 import { Card, Col, Row } from "react-bootstrap";
 import { Button } from "reactstrap";
@@ -9,10 +9,12 @@ import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { API } from "../config";
 import { NotificationManager } from "react-notifications";
+import { AppStateContext } from "../context/AppStateProvider";
 
 const ProductCard = ({ history, product, location }) => {
+  const { setCartChanged } = useContext(AppStateContext);
   const stripePromise = loadStripe(
-    "pk_test_51IvQ82SJVrKhBkqWxEocQARZw4voqqtkfVzX4R2ln44Fn7Ym8cqU1mXu52AbEnsCTp5x8duhldLbeJPzv0gZ3Pnj00wg2A54tP"
+    "pk_live_51IvQ82SJVrKhBkqWXqzV8G8jNcVYfi1DO45OOr3nmTq5y6xVTOqhzljtM28gwyEMvp8HzLVdMBcPDbmNZTnkpP8K00B3Rhy7Gy"
   );
 
   const handleBuyNow = async (product) => {
@@ -20,8 +22,8 @@ const ProductCard = ({ history, product, location }) => {
     const stripe = await stripePromise;
 
     // Call your backend to create the Checkout Session
-    const response = await axios.post(`${API}/payment/${product._id}`, {
-      product: product,
+    const response = await axios.post(`${API}/payment`, {
+      products: [{ ...product }],
     });
     console.log(response);
 
@@ -54,6 +56,7 @@ const ProductCard = ({ history, product, location }) => {
         );
 
         localStorage.setItem("cart", JSON.stringify(cart));
+        setCartChanged(true);
         NotificationManager.success(
           "Item has been added to your cart",
           "Success",
@@ -70,6 +73,42 @@ const ProductCard = ({ history, product, location }) => {
     }
   };
 
+  const handleRemove = (product) => {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    const index = cart.findIndex(
+      (item) => JSON.stringify(item) === JSON.stringify(product)
+    );
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    console.log(cart);
+    setCartChanged(true);
+  };
+
+  const handleProductInc = (product) => {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    const index = cart.findIndex(
+      (item) => JSON.stringify(item) === JSON.stringify(product)
+    );
+    product.count = product.count + 1;
+    cart[index] = product;
+    localStorage.setItem("cart", JSON.stringify(cart));
+    console.log(cart);
+    setCartChanged(true);
+  };
+
+  const handleProductDec = (product) => {
+    if (product.count > 1) {
+      const cart = JSON.parse(localStorage.getItem("cart"));
+      const index = cart.findIndex(
+        (item) => JSON.stringify(item) === JSON.stringify(product)
+      );
+      product.count = product.count - 1;
+      cart[index] = product;
+      localStorage.setItem("cart", JSON.stringify(cart));
+      console.log(cart);
+      setCartChanged(true);
+    }
+  };
   return (
     <React.Fragment>
       <Card
@@ -120,8 +159,15 @@ const ProductCard = ({ history, product, location }) => {
                     2
                   )}`}</div>
                 </Col>
-                <Col style={{ marginTop: 5 }}>
-                  {location.pathname === "/cart" ? null : (
+                <Col md={4} xs={12} style={{ marginTop: 5 }}>
+                  {location.pathname === "/cart" ? (
+                    <Button
+                      style={{ background: COLORS.THEME_COLOR }}
+                      onClick={() => handleRemove(product)}
+                    >
+                      Remove Item
+                    </Button>
+                  ) : (
                     <Button
                       style={{ background: COLORS.THEME_COLOR }}
                       onClick={() => handleAddToCart(product)}
@@ -130,24 +176,50 @@ const ProductCard = ({ history, product, location }) => {
                     </Button>
                   )}
                   <Button
-                    style={
-                      location.pathname === "/cart"
-                        ? {
-                            background: COLORS.THEME_COLOR,
-
-                            width: 110,
-                          }
-                        : {
-                            background: COLORS.THEME_COLOR,
-                            marginLeft: 10,
-                            width: 110,
-                          }
-                    }
+                    style={{
+                      background: COLORS.THEME_COLOR,
+                      marginLeft: 10,
+                      width: 110,
+                    }}
                     onClick={() => handleBuyNow(product)}
                   >
                     Buy Now
                   </Button>
                 </Col>
+                {location.pathname === "/cart" ? (
+                  <Col
+                    md={{ span: 4, offset: 4 }}
+                    style={{ marginTop: 5, textAlign: "center" }}
+                  >
+                    <Button
+                      style={{
+                        background: COLORS.THEME_COLOR,
+                        borderRadius: ".25rem 0rem 0rem .25rem",
+                      }}
+                      onClick={() => handleProductInc(product)}
+                    >
+                      +
+                    </Button>
+                    <Button
+                      disabled
+                      style={{
+                        background: COLORS.THEME_COLOR,
+                        borderRadius: "0rem",
+                      }}
+                    >
+                      {product.count}
+                    </Button>
+                    <Button
+                      style={{
+                        background: COLORS.THEME_COLOR,
+                        borderRadius: "0rem .25rem .25rem 0rem",
+                      }}
+                      onClick={() => handleProductDec(product)}
+                    >
+                      -
+                    </Button>
+                  </Col>
+                ) : null}
               </Row>
             </Col>
           </Row>

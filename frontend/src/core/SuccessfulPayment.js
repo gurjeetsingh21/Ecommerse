@@ -8,7 +8,11 @@ const SuccessfulPayment = ({ history }) => {
     <Container fluid>
       <Row>
         <Col md={{ span: 8, offset: 3 }}>
-          <img src={paymentSuccess} width="75%" />
+          <img
+            src={paymentSuccess}
+            width="75%"
+            style={{ marginTop: 50, marginBottom: 50 }}
+          />
         </Col>
       </Row>
     </Container>

@@ -3,7 +3,7 @@ const router = express.Router();
 const { payment } = require("../controllers/payment");
 const { productById } = require("../controllers/product");
 
-router.post("/payment/:productId", payment);
+router.post("/payment", payment);
 
 router.param("productId", productById);
 

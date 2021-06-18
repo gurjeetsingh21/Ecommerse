@@ -59,11 +59,26 @@ const ProductsByCategory = (props) => {
                 }}
               />
             </Col>
-            {filteredProducts.map((product, index) => (
-              <Col key={index} sm={12} style={{ marginBottom: 30 }}>
-                <ProductCard product={product} />
-              </Col>
-            ))}
+            {filteredProducts.length > 0 ? (
+              <>
+                {filteredProducts.map((product, index) => (
+                  <Col key={index} sm={12} style={{ marginBottom: 30 }}>
+                    <ProductCard product={product} />
+                  </Col>
+                ))}
+              </>
+            ) : (
+              <Container>
+                <Row>
+                  <Col>
+                    <h3 style={{ textAlign: "center", color: "white" }}>
+                      Sorry, no items match your filter. <br /> Please try
+                      again.
+                    </h3>
+                  </Col>
+                </Row>
+              </Container>
+            )}
           </Row>
         </Container>
       )}

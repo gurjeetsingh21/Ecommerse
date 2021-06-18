@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import {
@@ -22,10 +22,12 @@ import { NotificationManager } from "react-notifications";
 import COLORS from "../assets/css/CssVariables";
 import { API } from "../config";
 import * as Yup from "yup";
+import { AppStateContext } from "../context/AppStateProvider";
 
 const Signin = () => {
   const history = useHistory();
   console.log(process.env.REACT_APP_API_URL);
+  const { setCartChanged } = useContext(AppStateContext);
   return (
     <React.Fragment>
       <div className="my-5">
@@ -87,8 +89,18 @@ const Signin = () => {
                                 "user",
                                 JSON.stringify(response.data.user)
                               );
-                              localStorage.setItem("cart", JSON.stringify([]));
-                              history.push("/");
+                              localStorage.setItem(
+                                "cart",
+                                JSON.stringify([
+                                  ...response.data.user.history[0].cart,
+                                ])
+                              );
+
+                              if (response.data.user.role === 1) {
+                                history.push("/admin/dashboard");
+                              } else {
+                                history.push("/");
+                              }
                             } else {
                               NotificationManager.error(
                                 response.data.systemMessage,

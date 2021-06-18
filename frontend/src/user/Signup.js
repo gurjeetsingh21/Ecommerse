@@ -76,6 +76,7 @@ const Signup = () => {
                               name: values.name,
                               email: values.email,
                               password: values.password,
+                              history: [{ cart: [] }, { orders: [] }],
                             });
                             console.log(response);
                             if (response.data.systemMessageType === "success") {

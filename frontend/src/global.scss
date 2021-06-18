@@ -9,6 +9,10 @@ body {
   text-align: left !important;
   background-color: #131921 !important;
 
+  button {
+    outline: none !important;
+  }
+
   label {
     font-weight: 600;
   }
@@ -164,5 +168,23 @@ body {
   }
   .back-home {
     color: white;
+  }
+  .cart-heading {
+    color: white;
+    text-align: center;
+  }
+  .dashboard-card {
+    justify-content: center;
+    align-items: center;
+  }
+  .dashboard-card-text {
+    margin-left: 10px;
+    font-size: 30px;
+    color: black;
+  }
+  @media only screen and (max-width: 600px) {
+    .dashboard-card-text {
+      font-size: 20px;
+    }
   }
 }

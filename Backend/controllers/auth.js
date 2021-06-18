@@ -43,11 +43,11 @@ exports.signin = (req, res) => {
     }
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
     res.cookie("t", token, { expire: new Date() + 9999 });
-    const { _id, name, email, role } = user;
+    const { _id, name, email, role, history } = user;
     return res.json({
       systemMessage: "",
       systemMessageType: "success",
-      user: { token, _id, email, name, role },
+      user: { token, _id, email, name, role, history },
     });
   });
 };

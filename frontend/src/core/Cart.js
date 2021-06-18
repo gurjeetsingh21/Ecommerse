@@ -1,23 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router";
 import { Container, Row, Col } from "react-bootstrap";
-import axios from "axios";
-import { API } from "../config";
 import ProductCard from "./ProductCard";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
+import { AppStateContext } from "../context/AppStateProvider";
+import { Button } from "reactstrap";
+import COLORS from "../assets/css/CssVariables";
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
+import { API } from "../config";
 
-const Cart = (props) => {
+const Cart = ({ history }) => {
   const [products, setProducts] = useState(null);
-  const [filteredProducts, setFilteredProducts] = useState(null);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [volume, setVolume] = useState(0);
+  const { cartChanged, setCartChanged } = useContext(AppStateContext);
+  const stripePromise = loadStripe(
+    "pk_live_51IvQ82SJVrKhBkqWXqzV8G8jNcVYfi1DO45OOr3nmTq5y6xVTOqhzljtM28gwyEMvp8HzLVdMBcPDbmNZTnkpP8K00B3Rhy7Gy"
+  );
 
   useEffect(() => {
+    console.log("cart updated in database");
     let cart = JSON.parse(localStorage.getItem("cart"));
-    console.log(cart);
     setProducts(cart);
     setFilteredProducts(cart);
-  }, []);
+  }, [cartChanged]);
 
   function filterProducts(product) {
     return product.price <= this;
@@ -28,34 +36,83 @@ const Cart = (props) => {
     setVolume(value);
   };
 
+  const handleEmptyCart = () => {
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    cart = [];
+    localStorage.setItem("cart", JSON.stringify(cart));
+    setCartChanged(true);
+  };
+
+  const handleBuyAll = async () => {
+    // Get Stripe.js instance
+    const stripe = await stripePromise;
+
+    const cart = JSON.parse(localStorage.getItem("cart"));
+
+    // Call your backend to create the Checkout Session
+    const response = await axios.post(`${API}/payment`, {
+      products: cart,
+    });
+    console.log(response);
+
+    const session = response.data;
+
+    // When the customer clicks on the button, redirect them to Checkout.
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+
+    if (result.error) {
+      // If `redirectToCheckout` fails due to a browser or network
+      // error, display the localized error message to your customer
+      // using `result.error.message`.
+      history.push("/checkout/failed");
+    }
+  };
+
   return (
     <React.Fragment>
-      {filteredProducts && (
+      {filteredProducts.length > 0 ? (
         <Container>
           <Row>
-            <Col md={{ span: 4, offset: 8 }}>
-              <h5 className="filter-heading">Price</h5>
+            <Col sm={12}>
+              <h2 className="cart-heading">Here are your selected items</h2>
             </Col>
-            <Col md={{ span: 4, offset: 8 }} style={{ marginBottom: 10 }}>
-              <Slider
-                style={{ background: "white" }}
-                value={volume}
-                min={0}
-                max={2000}
-                step={100}
-                orientation="horizontal"
-                onChange={handleOnChange}
-                onChangeComplete={() => {
-                  const temp = products.filter(filterProducts, volume);
-                  setFilteredProducts(temp);
-                }}
-              />
-            </Col>
+
             {filteredProducts.map((product, index) => (
               <Col key={index} sm={12} style={{ marginBottom: 30 }}>
                 <ProductCard product={product} />
               </Col>
             ))}
+          </Row>
+          <Row>
+            <Col
+              md={{ span: 4, offset: 8 }}
+              style={{ marginBottom: 30, textAlign: "end" }}
+            >
+              <Button
+                style={{ background: COLORS.THEME_COLOR }}
+                onClick={handleEmptyCart}
+              >
+                Empty Cart
+              </Button>
+              <Button
+                style={{ background: COLORS.THEME_COLOR, marginLeft: 20 }}
+                onClick={handleBuyAll}
+              >
+                Buy All
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+      ) : (
+        <Container>
+          <Row>
+            <Col>
+              <h3 style={{ textAlign: "center", color: "white" }}>
+                Sorry, there are no items in your cart
+              </h3>
+            </Col>
           </Row>
         </Container>
       )}

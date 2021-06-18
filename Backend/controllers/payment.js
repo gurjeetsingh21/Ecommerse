@@ -1,29 +1,34 @@
 const stripe = require("stripe")(
-  "sk_test_51IvQ82SJVrKhBkqWOULGtnq7aqACz1U7ZTsNkHtNQyMSzeqv8lkuEiuIGryJ8OaI6E1UEzCXEXC2m6W1N1OiDiDB008JHjEpGq"
+  "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"
 );
 const fs = require("fs");
 
 exports.payment = async (req, res) => {
-  const { product } = req.body;
+  const products = [...req.body.products];
+  const lineItems = [];
+  products.map((product) => {
+    lineItems.push({
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: product.name,
+        },
+        unit_amount: product.price * 100,
+      },
+      quantity: product.count ? product.count : 1,
+    });
+  });
   const domainURL = process.env.WEB_APP_URL;
-  console.log(req.product);
-  const buffer = Buffer.from(req.product.photo.data.buffer);
-  fs.writeFileSync("assets/img/new-path.jpg", buffer);
+  // const buffer = Buffer.from(req.product.photo.data.buffer);
+  // fs.writeFileSync("assets/img/new-path.jpg", buffer);
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
-    line_items: [
-      {
-        price_data: {
-          currency: "inr",
-          product_data: {
-            name: product.name,
-            images: [`assets/img/new-path.jpg`],
-          },
-          unit_amount: product.price * 100,
-        },
-        quantity: 1,
-      },
-    ],
+    shipping_rates: ["shr_1J2InPSJVrKhBkqW0q0ZuqXo"],
+    shipping_address_collection: {
+      allowed_countries: ["IN"],
+    },
+    line_items: lineItems,
     mode: "payment",
     success_url: `${domainURL}/checkout/success`,
     cancel_url: `${domainURL}/home`,
