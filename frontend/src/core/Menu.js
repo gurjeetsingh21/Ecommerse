@@ -62,7 +62,7 @@ const Menu = ({ history }) => {
             { history: [...user.history] },
             {
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `${localStorage.getItem("token")}`,
               },
             }
           );

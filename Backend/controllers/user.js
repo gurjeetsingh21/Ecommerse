@@ -19,7 +19,16 @@ exports.read = (req, res) => {
   return res.json(req.profile);
 };
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
+  let hashed_password = "";
+  await user.findOne({ email: req.profile.email }, (err, user) => {
+    const { password } = req.body;
+    if (password) {
+      hashed_password = user.encryptPassword(password);
+      delete req.body.password;
+      req.body.hashed_password = hashed_password;
+    }
+  });
   user.findOneAndUpdate(
     { _id: req.profile._id },
     { $set: req.body },

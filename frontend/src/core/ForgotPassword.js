@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import {
@@ -15,14 +15,15 @@ import {
   Input,
 } from "reactstrap";
 import { Form, Formik, ErrorMessage } from "formik";
-import { Mail, Lock, User } from "react-feather";
+import { Mail } from "react-feather";
+
 import "../global.scss";
 import { NotificationManager } from "react-notifications";
 import COLORS from "../assets/css/CssVariables";
 import { API } from "../config";
 import * as Yup from "yup";
 
-const Signup = () => {
+const ForgotPassword = () => {
   const history = useHistory();
   return (
     <React.Fragment>
@@ -34,58 +35,41 @@ const Signup = () => {
                 <CardBody className="p-0">
                   <Row>
                     <Col md={6} className="p-5 position-relative">
-                      <div className="mx-auto mb-3">
-                        <a href="/">
-                          {/* <img src={logo} alt="" height="24" /> */}
-                          <h3 className="d-inline align-middle ml-1 text-logo">
-                            Register
-                          </h3>
-                        </a>
+                      <div className="mx-auto mb-5">
+                        <h3 className="d-inline align-middle ml-1 text-logo">
+                          Forgot Password
+                        </h3>
                       </div>
 
-                      <h6 className="h5 mb-3 mt-2">Welcome!!!</h6>
-
+                      <h6 className="h5 mb-0 mt-4">Welcome back!</h6>
+                      <p className="text-muted mt-1 mb-4">
+                        Enter your email address and follow the instructions to
+                        recover your account
+                      </p>
                       <Formik
                         initialValues={{
                           email: "",
-                          password: "",
-                          name: "",
                         }}
                         validationSchema={Yup.object().shape({
-                          name: Yup.string()
-                            .required("Name is required")
-                            .matches(
-                              /[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/,
-                              "Name must only contain alphabets and space"
-                            ),
                           email: Yup.string()
                             .required("Email is required")
                             .email("Enter a valid email"),
-                          password: Yup.string()
-                            .required("Password is required")
-                            .min(8, "Minimum 8 characters")
-                            .matches(
-                              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-                              "Password Must contain one oppercase, one lowercase, one number and one special case character"
-                            )
-                            .max(20, "Maximum 20 characters"),
                         })}
                         onSubmit={async (values, actions) => {
                           try {
-                            const response = await axios.post(API + "/signup", {
-                              name: values.name,
-                              email: values.email,
-                              password: values.password,
-                              history: [{ cart: [] }, { orders: [] }],
-                            });
+                            const response = await axios.post(
+                              API + "/forgot-password",
+                              {
+                                email: values.email,
+                              }
+                            );
                             console.log(response);
                             if (response.data.systemMessageType === "success") {
                               NotificationManager.success(
-                                "You have been registered. Please login to continue",
+                                response.data.systemMessage,
                                 "Success",
                                 3000
                               );
-                              history.push("/signin");
                             } else {
                               NotificationManager.error(
                                 response.data.systemMessage,
@@ -103,28 +87,6 @@ const Signup = () => {
                         }}
                         render={({ values, handleChange }) => (
                           <Form>
-                            <FormGroup className="">
-                              <Label for="name">Name</Label>
-                              <InputGroup>
-                                <InputGroupAddon addonType="prepend">
-                                  <span className="input-group-text">
-                                    <User className="icon-dual" />
-                                  </span>
-                                </InputGroupAddon>
-                                <Input
-                                  onChange={handleChange}
-                                  type="text"
-                                  name="name"
-                                  id="username"
-                                  placeholder="Enter your name"
-                                />
-                              </InputGroup>
-                              <ErrorMessage
-                                name={"name"}
-                                className="error"
-                                component="div"
-                              />
-                            </FormGroup>
                             <FormGroup className="">
                               <Label for="username">Email ID</Label>
                               <InputGroup>
@@ -147,34 +109,6 @@ const Signup = () => {
                               />
                             </FormGroup>
 
-                            <FormGroup className="mb-3">
-                              <Label for="password">Password</Label>
-                              {/* <Link
-                              to="/account/forget-password"
-                              className="float-right text-muted text-unline-dashed ml-1"
-                            >
-                              Forgot your password?
-                            </Link> */}
-                              <InputGroup>
-                                <InputGroupAddon addonType="prepend">
-                                  <span className="input-group-text">
-                                    <Lock className="icon-dual" />
-                                  </span>
-                                </InputGroupAddon>
-                                <Input
-                                  onChange={handleChange}
-                                  type="password"
-                                  name="password"
-                                  id="password"
-                                  placeholder="Enter your password"
-                                />
-                              </InputGroup>
-                              <ErrorMessage
-                                name={"password"}
-                                className="error"
-                                component="div"
-                              />
-                            </FormGroup>
                             <FormGroup className="form-group mb-0 text-center">
                               <Button
                                 style={{
@@ -183,7 +117,7 @@ const Signup = () => {
                                 }}
                                 // onClick={this.SuperAdminHandler}
                               >
-                                Register
+                                Recover Account
                               </Button>
                             </FormGroup>
                           </Form>
@@ -217,4 +151,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default ForgotPassword;

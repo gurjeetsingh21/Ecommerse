@@ -10,41 +10,48 @@ exports.create = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        SystemMessage: "Image could not be uploaded",
-        SystemMessageType: "error",
+        systemMessage: "Image could not be uploaded",
+        systemMessageType: "error",
       });
     }
     const { name } = fields;
     if (!name) {
       return res.status(400).json({
-        SystemMessageType: "error",
-        SystemMessage: "All the fields are required",
+        systemMessageType: "error",
+        systemMessage: "All the fields are required",
       });
     }
-
-    const category = new Category(fields);
-
-    if (files.photo) {
-      if (files.photo.size > 1000000) {
-        return res.status(400).json({
-          SystemMessageType: "error",
-          SystemMessage: "Image must be less than 1MB",
+    Category.findOne({ name }, (err, category) => {
+      if (category) {
+        return res.json({
+          systemMessage: "Category with that name already exists",
+          systemMessageType: "error",
         });
       }
-      category.photo.data = fs.readFileSync(files.photo.path);
-      category.photo.contentType = files.photo.type;
-    }
-    category.save((err, data) => {
-      if (err) {
-        return res.status(400).json({
-          SystemMessage: errorHandler(err),
-          SystemMessageType: "error",
-        });
+      const newCategory = new Category(fields);
+
+      if (files.photo) {
+        if (files.photo.size > 1000000) {
+          return res.status(400).json({
+            systemMessageType: "error",
+            systemMessage: "Image must be less than 1MB",
+          });
+        }
+        newCategory.photo.data = fs.readFileSync(files.photo.path);
+        newCategory.photo.contentType = files.photo.type;
       }
-      res.json({
-        SystemMessage: "",
-        SystemMessageType: "success",
-        category: data,
+      newCategory.save((err, data) => {
+        if (err) {
+          return res.status(400).json({
+            systemMessage: errorHandler(err),
+            systemMessageType: "error",
+          });
+        }
+        res.json({
+          systemMessage: "",
+          systemMessageType: "success",
+          category: data,
+        });
       });
     });
   });
@@ -61,15 +68,15 @@ exports.update = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        SystemMessage: "Image could not be uploaded",
-        SystemMessageType: "error",
+        systemMessage: "Image could not be uploaded",
+        systemMessageType: "error",
       });
     }
     const { name } = fields;
     if (!name) {
       return res.status(400).json({
-        SystemMessageType: "error",
-        SystemMessage: "All the fields are required",
+        systemMessageType: "error",
+        systemMessage: "All the fields are required",
       });
     }
 
@@ -78,8 +85,8 @@ exports.update = (req, res) => {
     if (files.photo) {
       if (files.photo.size > 1000000) {
         return res.status(400).json({
-          SystemMessageType: "error",
-          SystemMessage: "Image must be less than 1MB",
+          systemMessageType: "error",
+          systemMessage: "Image must be less than 1MB",
         });
       }
       category.photo.data = fs.readFileSync(files.photo.path);
@@ -93,8 +100,8 @@ exports.update = (req, res) => {
         });
       }
       res.json({
-        SystemMessageType: "success",
-        SystemMessage: "",
+        systemMessageType: "success",
+        systemMessage: "",
         category: category,
       });
     });
@@ -110,8 +117,8 @@ exports.remove = (req, res) => {
       });
     }
     res.json({
-      SystemMessageType: "success",
-      SystemMessage: "Category is successfully created",
+      systemMessageType: "success",
+      systemMessage: "Category is successfully created",
     });
   });
 };
@@ -133,8 +140,8 @@ exports.categoryById = (req, res, next, id) => {
   Category.findById(id).exec((err, category) => {
     if (err || !category) {
       return res.status(400).json({
-        SystemMessageType: "error",
-        SystemMessage: "Category does not exist",
+        systemMessageType: "error",
+        systemMessage: "Category does not exist",
       });
     }
     req.category = category;

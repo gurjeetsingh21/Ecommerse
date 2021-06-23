@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import {
@@ -15,15 +15,19 @@ import {
   Input,
 } from "reactstrap";
 import { Form, Formik, ErrorMessage } from "formik";
-import { Mail, Lock, User } from "react-feather";
+import { Lock } from "react-feather";
+import { Link } from "react-router-dom";
 import "../global.scss";
 import { NotificationManager } from "react-notifications";
 import COLORS from "../assets/css/CssVariables";
 import { API } from "../config";
 import * as Yup from "yup";
+import { useParams } from "react-router-dom";
 
-const Signup = () => {
+const Signin = () => {
   const history = useHistory();
+  const { token } = useParams();
+  console.log(token);
   return (
     <React.Fragment>
       <div className="my-5">
@@ -34,33 +38,23 @@ const Signup = () => {
                 <CardBody className="p-0">
                   <Row>
                     <Col md={6} className="p-5 position-relative">
-                      <div className="mx-auto mb-3">
-                        <a href="/">
-                          {/* <img src={logo} alt="" height="24" /> */}
-                          <h3 className="d-inline align-middle ml-1 text-logo">
-                            Register
-                          </h3>
-                        </a>
+                      <div className="mx-auto mb-5">
+                        <h3 className="d-inline align-middle ml-1 text-logo">
+                          Reset Password
+                        </h3>
                       </div>
 
-                      <h6 className="h5 mb-3 mt-2">Welcome!!!</h6>
-
+                      <h6 className="h5 mb-0 mt-4">Welcome back!</h6>
+                      <p className="text-muted mt-1 mb-4">
+                        Please enter your new password and login with the same
+                        to book your favourite books
+                      </p>
                       <Formik
                         initialValues={{
-                          email: "",
+                          reset_password_link: token,
                           password: "",
-                          name: "",
                         }}
                         validationSchema={Yup.object().shape({
-                          name: Yup.string()
-                            .required("Name is required")
-                            .matches(
-                              /[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/,
-                              "Name must only contain alphabets and space"
-                            ),
-                          email: Yup.string()
-                            .required("Email is required")
-                            .email("Enter a valid email"),
                           password: Yup.string()
                             .required("Password is required")
                             .min(8, "Minimum 8 characters")
@@ -72,16 +66,14 @@ const Signup = () => {
                         })}
                         onSubmit={async (values, actions) => {
                           try {
-                            const response = await axios.post(API + "/signup", {
-                              name: values.name,
-                              email: values.email,
-                              password: values.password,
-                              history: [{ cart: [] }, { orders: [] }],
-                            });
+                            const response = await axios.post(
+                              API + "/reset-password",
+                              values
+                            );
                             console.log(response);
                             if (response.data.systemMessageType === "success") {
                               NotificationManager.success(
-                                "You have been registered. Please login to continue",
+                                response.data.systemMessage,
                                 "Success",
                                 3000
                               );
@@ -103,58 +95,9 @@ const Signup = () => {
                         }}
                         render={({ values, handleChange }) => (
                           <Form>
-                            <FormGroup className="">
-                              <Label for="name">Name</Label>
-                              <InputGroup>
-                                <InputGroupAddon addonType="prepend">
-                                  <span className="input-group-text">
-                                    <User className="icon-dual" />
-                                  </span>
-                                </InputGroupAddon>
-                                <Input
-                                  onChange={handleChange}
-                                  type="text"
-                                  name="name"
-                                  id="username"
-                                  placeholder="Enter your name"
-                                />
-                              </InputGroup>
-                              <ErrorMessage
-                                name={"name"}
-                                className="error"
-                                component="div"
-                              />
-                            </FormGroup>
-                            <FormGroup className="">
-                              <Label for="username">Email ID</Label>
-                              <InputGroup>
-                                <InputGroupAddon addonType="prepend">
-                                  <span className="input-group-text">
-                                    <Mail className="icon-dual" />
-                                  </span>
-                                </InputGroupAddon>
-                                <Input
-                                  onChange={handleChange}
-                                  name="email"
-                                  id="username"
-                                  placeholder="hello@coderthemes.com"
-                                />
-                              </InputGroup>
-                              <ErrorMessage
-                                name={"email"}
-                                className="error"
-                                component="div"
-                              />
-                            </FormGroup>
-
                             <FormGroup className="mb-3">
                               <Label for="password">Password</Label>
-                              {/* <Link
-                              to="/account/forget-password"
-                              className="float-right text-muted text-unline-dashed ml-1"
-                            >
-                              Forgot your password?
-                            </Link> */}
+
                               <InputGroup>
                                 <InputGroupAddon addonType="prepend">
                                   <span className="input-group-text">
@@ -166,7 +109,7 @@ const Signup = () => {
                                   type="password"
                                   name="password"
                                   id="password"
-                                  placeholder="Enter your password"
+                                  placeholder="Enter your new password"
                                 />
                               </InputGroup>
                               <ErrorMessage
@@ -183,7 +126,7 @@ const Signup = () => {
                                 }}
                                 // onClick={this.SuperAdminHandler}
                               >
-                                Register
+                                Reset Password
                               </Button>
                             </FormGroup>
                           </Form>
@@ -217,4 +160,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Signin;

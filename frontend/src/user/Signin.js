@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import {
@@ -16,18 +16,16 @@ import {
 } from "reactstrap";
 import { Form, Formik, ErrorMessage } from "formik";
 import { Mail, Lock } from "react-feather";
-
+import { Link } from "react-router-dom";
 import "../global.scss";
 import { NotificationManager } from "react-notifications";
 import COLORS from "../assets/css/CssVariables";
 import { API } from "../config";
 import * as Yup from "yup";
-import { AppStateContext } from "../context/AppStateProvider";
 
 const Signin = () => {
   const history = useHistory();
   console.log(process.env.REACT_APP_API_URL);
-  const { setCartChanged } = useContext(AppStateContext);
   return (
     <React.Fragment>
       <div className="my-5">
@@ -82,7 +80,7 @@ const Signin = () => {
                               );
                               localStorage.setItem(
                                 "token",
-                                response.data.user.token
+                                `Bearer ${response.data.user.token}`
                               );
                               delete response.data.user.token;
                               localStorage.setItem(
@@ -141,12 +139,12 @@ const Signin = () => {
                             </FormGroup>
                             <FormGroup className="mb-3">
                               <Label for="password">Password</Label>
-                              {/* <Link
-                              to="/account/forget-password"
-                              className="float-right text-muted text-unline-dashed ml-1"
-                            >
-                              Forgot your password?
-                            </Link> */}
+                              <Link
+                                to="/forgot-password"
+                                className="float-right text-muted text-unline-dashed ml-1"
+                              >
+                                Forgot your password?
+                              </Link>
                               <InputGroup>
                                 <InputGroupAddon addonType="prepend">
                                   <span className="input-group-text">

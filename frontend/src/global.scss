@@ -176,11 +176,33 @@ body {
   .dashboard-card {
     justify-content: center;
     align-items: center;
+    cursor: pointer;
   }
   .dashboard-card-text {
     margin-left: 10px;
     font-size: 30px;
     color: black;
+  }
+  .admin-dashboard-heading {
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .category-select {
+    width: 100%;
+  }
+  .react-bootstrap-table {
+    thead {
+      background-color: white;
+      tr {
+        th {
+          // color: white;
+          font-size: large;
+          border: 1px solid red;
+          border-bottom: 2px solid red;
+        }
+      }
+    }
   }
   @media only screen and (max-width: 600px) {
     .dashboard-card-text {

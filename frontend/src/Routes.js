@@ -13,6 +13,11 @@ import FailedPayment from "./core/FailedPayment";
 import AppStateProvider from "./context/AppStateProvider";
 import AdminRoute from "./auth/AdminRoute";
 import Dashboard from "./admin/Dashboard";
+import ForgotPassword from "./core/ForgotPassword";
+import ResetPassword from "./core/ResetPassword";
+import CategoryDetails from "./admin/CategoryDetails";
+import ProductDetails from "./admin/ProductDetails";
+import ManageProducts from "./admin/ManageProducts";
 
 const Routes = () => {
   return (
@@ -32,6 +37,27 @@ const Routes = () => {
           <Route exact path="/checkout/failed" component={FailedPayment} />
           <Route exact path="/cart" component={Cart} />
           <AdminRoute exact path="/admin/dashboard" component={Dashboard} />
+          <AdminRoute
+            exact
+            path="/admin/create/category"
+            component={CategoryDetails}
+          />
+          <AdminRoute
+            exact
+            path="/admin/create/product"
+            component={ProductDetails}
+          />
+          <AdminRoute
+            path="/update/product/:productId"
+            component={ProductDetails}
+          />
+          <AdminRoute
+            exact
+            path="/admin/manage/products"
+            component={ManageProducts}
+          />
+          <Route exact path="/forgot-password" component={ForgotPassword} />
+          <Route path="/auth/password/reset/:token" component={ResetPassword} />
           <Redirect from="/" to="/home" />
         </Switch>
         <Footer />

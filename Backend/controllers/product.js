@@ -43,23 +43,25 @@ exports.create = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        SystemMessage: "Image could not be uploaded",
-        SystemMessageType: "error",
+        systemMessage: "Image could not be uploaded",
+        systemMessageType: "error",
       });
     }
     // check for fields
-    const { name, description, price, category, quantity, shipping } = fields;
+    const { name, description, price, category, quantity, shipping, author } =
+      fields;
     if (
       !name ||
       !description ||
       !price ||
       !category ||
       !quantity ||
-      !shipping
+      !shipping ||
+      !author
     ) {
       return res.status(400).json({
-        SystemMessageType: "error",
-        SystemMessage: "All the fields are required",
+        systemMessageType: "error",
+        systemMessage: "All the fields are required",
       });
     }
 
@@ -68,8 +70,8 @@ exports.create = (req, res) => {
     if (files.photo) {
       if (files.photo.size > 1000000) {
         return res.status(400).json({
-          SystemMessageType: "error",
-          SystemMessage: "Image must be less than 1MB",
+          systemMessageType: "error",
+          systemMessage: "Image must be less than 1MB",
         });
       }
       product.photo.data = fs.readFileSync(files.photo.path);
@@ -78,13 +80,13 @@ exports.create = (req, res) => {
     product.save((err, data) => {
       if (err) {
         res.status(400).json({
-          SystemMessage: err,
-          SystemMessageType: "error",
+          systemMessage: err,
+          systemMessageType: "error",
         });
       }
       res.json({
-        SystemMessage: "",
-        SystemMessageType: "success",
+        systemMessage: "",
+        systemMessageType: "success",
         product: data,
       });
     });
@@ -96,13 +98,13 @@ exports.remove = (req, res) => {
   product.remove((err, deletedProduct) => {
     if (err) {
       return res.status(400).json({
-        SystemMessage: errorHandler(err),
-        SystemMessageType: "error",
+        systemMessage: errorHandler(err),
+        systemMessageType: "error",
       });
     }
     res.json({
-      SystemMessageType: "success",
-      SystemMessage: "Product is successfully Deleted",
+      systemMessageType: "success",
+      systemMessage: "Product is successfully Deleted",
     });
   });
 };
@@ -113,23 +115,25 @@ exports.update = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        SystemMessage: "Image could not be uploaded",
-        SystemMessageType: "error",
+        systemMessage: "Image could not be uploaded",
+        systemMessageType: "error",
       });
     }
     // check for fields
-    const { name, description, price, category, quantity, shipping } = fields;
+    const { name, description, price, category, quantity, shipping, author } =
+      fields;
     if (
       !name ||
       !description ||
       !price ||
       !category ||
       !quantity ||
-      !shipping
+      !shipping ||
+      !author
     ) {
       return res.status(400).json({
-        SystemMessageType: "error",
-        SystemMessage: "All the fields are required",
+        systemMessageType: "error",
+        systemMessage: "All the fields are required",
       });
     }
 
@@ -139,8 +143,8 @@ exports.update = (req, res) => {
     if (files.photo) {
       if (files.photo.size > 1000000) {
         return res.status(400).json({
-          SystemMessageType: "error",
-          SystemMessage: "Image must be less than 1MB",
+          systemMessageType: "error",
+          systemMessage: "Image must be less than 1MB",
         });
       }
       product.photo.data = fs.readFileSync(files.photo.path);
@@ -149,13 +153,13 @@ exports.update = (req, res) => {
     product.save((err, data) => {
       if (err) {
         res.status(400).json({
-          SystemMessage: errorHandler(err),
-          SystemMessageType: "error",
+          systemMessage: errorHandler(err),
+          systemMessageType: "error",
         });
       }
       res.json({
-        SystemMessage: "",
-        SystemMessageType: "success",
+        systemMessage: "",
+        systemMessageType: "success",
         product: data,
       });
     });
