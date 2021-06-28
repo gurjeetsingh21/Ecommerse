@@ -46,6 +46,11 @@ const productSchema = new mongoose.Schema(
       required: false,
       type: Boolean,
     },
+    shop: {
+      type: ObjectId,
+      ref: "Shop",
+      required: true,
+    },
   },
   { timestamps: true }
 );

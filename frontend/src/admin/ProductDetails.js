@@ -26,6 +26,7 @@ import Select from "react-select";
 
 const ProductDetails = ({ history, location }) => {
   const [categoryOptions, setCategoryOptions] = useState([]);
+  const [shopOptions, setShopOptions] = useState([]);
   const [productImage, setProductImage] = useState("");
   const [productBinaryPhoto, setProductBinaryPhoto] = useState("");
 
@@ -85,6 +86,17 @@ const ProductDetails = ({ history, location }) => {
     setCategoryOptions([...temp]);
   }, []);
 
+  useEffect(async () => {
+    const response = await axios.get(`${API}/shops`);
+    const temp = [];
+    if (response.data) {
+      response.data.map((shop) => {
+        temp.push({ _id: shop._id, name: shop.name });
+      });
+    }
+    setShopOptions([...temp]);
+  }, []);
+
   return (
     <React.Fragment>
       <div className="my-5">
@@ -119,6 +131,7 @@ const ProductDetails = ({ history, location }) => {
                           category: location.state
                             ? location.state.data.category
                             : "",
+                          shop: location.state ? location.state.data.shop : "",
                           shipping: true,
                           quantity: location.state
                             ? location.state.data.quantity
@@ -141,6 +154,9 @@ const ProductDetails = ({ history, location }) => {
                           category: Yup.object()
                             .typeError("Please select a category")
                             .required("Please select a category"),
+                          shop: Yup.object()
+                            .typeError("Please select a shop")
+                            .required("Please select a shop"),
                           quantity: Yup.number()
                             .typeError("Product price must be a number")
                             .required("Product quantity is required"),
@@ -156,6 +172,7 @@ const ProductDetails = ({ history, location }) => {
                           formData.append("description", values.description);
                           formData.append("price", values.price);
                           formData.append("category", values.category._id);
+                          formData.append("shop", values.shop._id);
                           formData.append("shipping", values.shipping);
                           formData.append("quantity", values.quantity);
                           formData.append("author", values.author);
@@ -332,6 +349,29 @@ const ProductDetails = ({ history, location }) => {
                               </InputGroup>
                               <ErrorMessage
                                 name={"description"}
+                                className="error"
+                                component="div"
+                              />
+                            </FormGroup>
+                            <FormGroup className="">
+                              <Label for="shop">Select Category</Label>
+                              <InputGroup>
+                                <Select
+                                  id="shop"
+                                  className="category-select"
+                                  name="shop"
+                                  placeholder="Select Shop"
+                                  value={values.shop}
+                                  getOptionLabel={(option) => option.name}
+                                  getOptionValue={(option) => option._id}
+                                  onChange={(shop) =>
+                                    setFieldValue("shop", shop)
+                                  }
+                                  options={shopOptions}
+                                />
+                              </InputGroup>
+                              <ErrorMessage
+                                name={"shop"}
                                 className="error"
                                 component="div"
                               />

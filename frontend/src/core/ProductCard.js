@@ -136,7 +136,7 @@ const ProductCard = ({ history, product, location }) => {
                   <h2 className="product-name">{product.name}</h2>
                 </Col>
                 <Col sm={12}>
-                  <div className="product-author">{`by ${product.author}`}</div>
+                  <div className="product-author">{`Author: ${product.author} | Seller: ${product.shop.name}`}</div>
                 </Col>
                 <Col sm={12}>
                   <div className="product-description-heading">Description</div>

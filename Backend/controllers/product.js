@@ -26,6 +26,7 @@ exports.getProductsByCategory = (req, res) => {
   Product.find({ category: { _id: req.category._id, name: req.category.name } })
     .select("-photo")
     .populate("category", "_id name")
+    .populate("shop", "_id name pincode")
     .exec((err, products) => {
       if (err) {
         return res.status(400).json({
@@ -120,8 +121,16 @@ exports.update = (req, res) => {
       });
     }
     // check for fields
-    const { name, description, price, category, quantity, shipping, author } =
-      fields;
+    const {
+      name,
+      description,
+      price,
+      category,
+      quantity,
+      shipping,
+      author,
+      shop,
+    } = fields;
     if (
       !name ||
       !description ||
@@ -129,7 +138,8 @@ exports.update = (req, res) => {
       !category ||
       !quantity ||
       !shipping ||
-      !author
+      !author ||
+      !shop
     ) {
       return res.status(400).json({
         systemMessageType: "error",
@@ -181,6 +191,7 @@ exports.list = (req, res) => {
   Product.find()
     .select("-photo")
     .populate("category", "_id name")
+    .populate("shop", "_id name pincode")
     .sort([[sortBy, order]])
     .limit(limit)
     .exec((err, data) => {
@@ -203,6 +214,7 @@ exports.listRelated = (req, res) => {
   Product.find({ _id: { $ne: req.product }, category: req.product.category })
     .limit(limit)
     .populate("category", "_id name")
+    .populate("shop", "_id name pincode")
     .exec((err, products) => {
       if (err) {
         return res.status(400).json({
@@ -254,6 +266,7 @@ exports.listBySearch = (req, res) => {
   Product.find(findArgs)
     .select("-photo")
     .populate("category")
+    .populate("shop")
     .sort([[sortBy, order]])
     .skip(skip)
     .limit(limit)
