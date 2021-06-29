@@ -354,7 +354,7 @@ const ProductDetails = ({ history, location }) => {
                               />
                             </FormGroup>
                             <FormGroup className="">
-                              <Label for="shop">Select Category</Label>
+                              <Label for="shop">Select Shop</Label>
                               <InputGroup>
                                 <Select
                                   id="shop"

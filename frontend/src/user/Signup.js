@@ -66,7 +66,7 @@ const Signup = () => {
                             .min(8, "Minimum 8 characters")
                             .matches(
                               /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-                              "Password Must contain one oppercase, one lowercase, one number and one special case character"
+                              "Password Must contain one uppercase, one lowercase, one number and one special case character"
                             )
                             .max(20, "Maximum 20 characters"),
                         })}
