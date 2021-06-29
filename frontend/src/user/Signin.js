@@ -72,7 +72,23 @@ const Signin = () => {
                               password: values.password,
                             });
                             console.log(response);
+                            let shop = null;
                             if (response.data.systemMessageType === "success") {
+                              shop = await axios.get(
+                                API + `/shop/user/${response.data.user._id}`
+                              );
+                              console.log(shop);
+                            }
+
+                            if (response.data.systemMessageType === "success") {
+                              if (shop.data.systemMessageType === "error") {
+                                localStorage.setItem("shop", null);
+                              } else {
+                                localStorage.setItem(
+                                  "shop",
+                                  JSON.stringify(shop.data.shop)
+                                );
+                              }
                               NotificationManager.success(
                                 "You have successfully logged in",
                                 "Success",

@@ -38,6 +38,22 @@ exports.getProductsByCategory = (req, res) => {
     });
 };
 
+exports.getProductsByShop = (req, res) => {
+  Product.find({ shop: { _id: req.shop._id } })
+    .select("-photo")
+    .populate("category", "_id name")
+    .populate("shop", "_id name pincode")
+    .exec((err, products) => {
+      if (err) {
+        return res.status(400).json({
+          systemMessage: "Product not found",
+          systemMessageType: "error",
+        });
+      }
+      res.send(products);
+    });
+};
+
 exports.create = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;

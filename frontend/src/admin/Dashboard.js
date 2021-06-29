@@ -11,30 +11,32 @@ const Dashboard = ({ history }) => {
         <Col xs={12}>
           <h1 className="admin-dashboard-heading">Admin Links</h1>
         </Col>
-        <Col
-          sm={12}
-          md={6}
-          style={{
-            marginTop: 20,
-            marginBottom: 20,
-            textAlign: "-webkit-center",
-          }}
-        >
-          <Card
-            style={{ backgroundColor: "#dee1e3", width: "80%" }}
-            className="dashboard-card"
-            onClick={() => history.push("/admin/create/category")}
+        {JSON.parse(localStorage.getItem("user")).role === 2 && (
+          <Col
+            sm={12}
+            md={6}
+            style={{
+              marginTop: 20,
+              marginBottom: 20,
+              textAlign: "-webkit-center",
+            }}
           >
-            <Card.Body>
-              <Row>
-                <Col style={{ display: "flex", alignItems: "center" }}>
-                  <FaListAlt fill="#131921" size={35} />
-                  <div className="dashboard-card-text">Create Category</div>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Col>
+            <Card
+              style={{ backgroundColor: "#dee1e3", width: "80%" }}
+              className="dashboard-card"
+              onClick={() => history.push("/admin/create/category")}
+            >
+              <Card.Body>
+                <Row>
+                  <Col style={{ display: "flex", alignItems: "center" }}>
+                    <FaListAlt fill="#131921" size={35} />
+                    <div className="dashboard-card-text">Create Category</div>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+        )}
         <Col
           sm={12}
           md={6}
@@ -83,29 +85,34 @@ const Dashboard = ({ history }) => {
             </Card.Body>
           </Card>
         </Col>
-        <Col
-          sm={12}
-          md={6}
-          style={{
-            marginTop: 20,
-            marginBottom: 20,
-            textAlign: "-webkit-center",
-          }}
-        >
-          <Card
-            style={{ backgroundColor: "#dee1e3", width: "80%" }}
-            className="dashboard-card"
+        {JSON.parse(localStorage.getItem("user")).role === 2 && (
+          <Col
+            sm={12}
+            md={6}
+            style={{
+              marginTop: 20,
+              marginBottom: 20,
+              textAlign: "-webkit-center",
+            }}
           >
-            <Card.Body>
-              <Row>
-                <Col style={{ display: "flex", alignItems: "center" }}>
-                  <GrView fill="#131921" size={35} />
-                  <div className="dashboard-card-text">View Orders</div>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Col>
+            <Card
+              style={{ backgroundColor: "#dee1e3", width: "80%" }}
+              className="dashboard-card"
+              onClick={() =>
+                window.open("https://dashboard.stripe.com/login", "_blank")
+              }
+            >
+              <Card.Body>
+                <Row>
+                  <Col style={{ display: "flex", alignItems: "center" }}>
+                    <GrView fill="#131921" size={35} />
+                    <div className="dashboard-card-text">View Orders</div>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+        )}
       </Row>
     </Container>
   );

@@ -18,6 +18,7 @@ import ResetPassword from "./core/ResetPassword";
 import CategoryDetails from "./admin/CategoryDetails";
 import ProductDetails from "./admin/ProductDetails";
 import ManageProducts from "./admin/ManageProducts";
+import ShopRegistration from "./user/ShopRegistration";
 
 const Routes = () => {
   return (
@@ -57,6 +58,7 @@ const Routes = () => {
             component={ManageProducts}
           />
           <Route exact path="/forgot-password" component={ForgotPassword} />
+          <Route exact path="/shop/register" component={ShopRegistration} />
           <Route path="/auth/password/reset/:token" component={ResetPassword} />
           <Redirect from="/" to="/home" />
         </Switch>

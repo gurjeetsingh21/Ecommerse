@@ -131,7 +131,11 @@ const ProductDetails = ({ history, location }) => {
                           category: location.state
                             ? location.state.data.category
                             : "",
-                          shop: location.state ? location.state.data.shop : "",
+                          shop: location.state
+                            ? location.state.data.shop
+                            : localStorage.getItem("shop")
+                            ? JSON.parse(localStorage.getItem("shop"))
+                            : "",
                           shipping: true,
                           quantity: location.state
                             ? location.state.data.quantity
@@ -354,7 +358,7 @@ const ProductDetails = ({ history, location }) => {
                               />
                             </FormGroup>
                             <FormGroup className="">
-                              <Label for="shop">Select Category</Label>
+                              <Label for="shop">Select Shop</Label>
                               <InputGroup>
                                 <Select
                                   id="shop"
@@ -368,6 +372,10 @@ const ProductDetails = ({ history, location }) => {
                                     setFieldValue("shop", shop)
                                   }
                                   options={shopOptions}
+                                  isDisabled={
+                                    JSON.parse(localStorage.getItem("user"))
+                                      .role === 1
+                                  }
                                 />
                               </InputGroup>
                               <ErrorMessage

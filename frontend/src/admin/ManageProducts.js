@@ -97,9 +97,17 @@ const ManageProducts = ({ history }) => {
   ];
 
   useEffect(async () => {
-    const response = await axios.get(`${API}/products?limit=undefined`);
-    setUpdated(false);
-    setProducts(response.data);
+    if (JSON.parse(localStorage.getItem("user")).role === 1) {
+      const response = await axios.get(
+        `${API}/products/shop/${JSON.parse(localStorage.getItem("shop"))._id}`
+      );
+      setUpdated(false);
+      setProducts(response.data);
+    } else {
+      const response = await axios.get(`${API}/products?limit=undefined`);
+      setUpdated(false);
+      setProducts(response.data);
+    }
   }, [updated]);
 
   const afterSearch = (newResult) => {

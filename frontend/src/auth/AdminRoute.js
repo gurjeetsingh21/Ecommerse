@@ -7,12 +7,12 @@ const AdminRoute = ({ component: Component, ...rest }) => (
     {...rest}
     render={(props) =>
       isAuthenticated() &&
-      JSON.parse(localStorage.getItem("user")).role === 1 ? (
+      JSON.parse(localStorage.getItem("user")).role !== 0 ? (
         <Component {...props} />
       ) : (
         <Redirect
           to={{
-            pathname: "/signin",
+            pathname: "/",
             state: { from: props.location },
           }}
         />

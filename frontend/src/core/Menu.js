@@ -121,7 +121,7 @@ const Menu = ({ history }) => {
             </>
           ) : (
             <>
-              {JSON.parse(localStorage.getItem("user")).role === 1 && (
+              {JSON.parse(localStorage.getItem("user")).role !== 0 && (
                 <NavItem className="item">
                   <Link
                     className="nav-link"
@@ -137,7 +137,17 @@ const Menu = ({ history }) => {
                   SignOut
                 </Link>
               </NavItem>
-
+              {JSON.parse(localStorage.getItem("user")).role === 0 && (
+                <NavItem className="item">
+                  <Link
+                    className="nav-link"
+                    to="/shop/register"
+                    style={{ color: isActive(history, "/shop/register") }}
+                  >
+                    Create Shop
+                  </Link>
+                </NavItem>
+              )}
               <NavItem className="item">
                 <Link className="nav-link" to="/cart">
                   <HiShoppingCart fill={isActive(history, "/cart")} size={30} />
