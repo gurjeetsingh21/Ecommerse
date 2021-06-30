@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 import {
@@ -16,13 +16,11 @@ import {
 } from "reactstrap";
 import { Form, Formik, ErrorMessage } from "formik";
 import { ShoppingBag } from "react-feather";
-import { Link } from "react-router-dom";
 import "../global.scss";
 import { NotificationManager } from "react-notifications";
 import COLORS from "../assets/css/CssVariables";
 import { API } from "../config";
 import * as Yup from "yup";
-import Image from "../assets/img/image.svg";
 import { IoImageOutline } from "react-icons/io5";
 
 const CreateCategory = ({ history }) => {

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import {
@@ -16,7 +16,6 @@ import {
 } from "reactstrap";
 import { Form, Formik, ErrorMessage } from "formik";
 import { Lock } from "react-feather";
-import { Link } from "react-router-dom";
 import "../global.scss";
 import { NotificationManager } from "react-notifications";
 import COLORS from "../assets/css/CssVariables";
