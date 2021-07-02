@@ -110,10 +110,10 @@ const Signin = () => {
                                 ])
                               );
 
-                              if (response.data.user.role === 1) {
-                                history.push("/admin/dashboard");
-                              } else {
+                              if (response.data.user.role === 0) {
                                 history.push("/");
+                              } else {
+                                history.push("/admin/dashboard");
                               }
                             } else {
                               NotificationManager.error(

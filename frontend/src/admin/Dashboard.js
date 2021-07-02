@@ -1,10 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router";
 import { Card, Row, Col, Container } from "react-bootstrap";
-import { FaListAlt, FaBook } from "react-icons/fa";
+import { FaListAlt, FaBook, FaTemperatureLow } from "react-icons/fa";
 import { GrUserManager, GrView } from "react-icons/gr";
+import BarChart from "./charts/BarChart";
+import { API } from "../config";
+import axios from "axios";
 
 const Dashboard = ({ history }) => {
+  const [quantityArray, setQuantityArray] = useState([]);
+  const [soldArray, setSoldArray] = useState([]);
+  const [productName, setProductName] = useState([]);
+
+  useEffect(async () => {
+    const sTemp = [];
+    const qTemp = [];
+    const temp = [];
+    if (JSON.parse(localStorage.getItem("user")).role === 1) {
+      const response = await axios.get(
+        `${API}/products/shop/${JSON.parse(localStorage.getItem("shop"))._id}`
+      );
+      response.data.map((product) => {
+        sTemp.push(product.sold);
+        qTemp.push(product.quantity);
+        temp.push(product.name);
+      });
+    } else {
+      const response = await axios.get(`${API}/products?limit=undefined`);
+      response.data.map((product) => {
+        sTemp.push(product.sold);
+        qTemp.push(product.quantity);
+        temp.push(product.name);
+      });
+    }
+    setQuantityArray([...qTemp]);
+    setProductName([...temp]);
+    setSoldArray([...sTemp]);
+  }, []);
+
   return (
     <Container>
       <Row>
@@ -110,6 +143,17 @@ const Dashboard = ({ history }) => {
                   </Col>
                 </Row>
               </Card.Body>
+            </Card>
+          </Col>
+        )}
+        {soldArray.length > 0 && quantityArray.length > 0 && (
+          <Col xs={12}>
+            <Card style={{ backgroundColor: "#dee1e3" }}>
+              <BarChart
+                sold={soldArray}
+                quantity={quantityArray}
+                name={productName}
+              />
             </Card>
           </Col>
         )}

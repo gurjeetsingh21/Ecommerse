@@ -9,6 +9,7 @@ import { isAuthenticated } from "../auth";
 import NavbarLogo from "../assets/img/Capture.PNG";
 import { HiShoppingCart } from "react-icons/hi";
 import { AppStateContext } from "../context/AppStateProvider";
+import SearchBar from "material-ui-search-bar";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) {
@@ -20,7 +21,9 @@ const isActive = (history, path) => {
 
 const Menu = ({ history }) => {
   const [cartItems, setCartItems] = useState(0);
-  const { cartChanged, setCartChanged } = useContext(AppStateContext);
+  const [search, setSearch] = useState("");
+  const { cartChanged, setCartChanged, setSearchedProducts } =
+    useContext(AppStateContext);
   const handleSignOut = async () => {
     try {
       localStorage.removeItem("token");
@@ -89,6 +92,22 @@ const Menu = ({ history }) => {
         style={{ justifyContent: "flex-end" }}
       >
         <Nav>
+          <NavItem>
+            <SearchBar
+              value={search}
+              onChange={(newValue) => setSearch(newValue)}
+              onRequestSearch={async () => {
+                if (search) {
+                  const response = await axios.get(
+                    `${API}/products/search?search=${search}`
+                  );
+                  setSearchedProducts(response.data);
+                  history.push("/product/search/result");
+                  console.log(response);
+                }
+              }}
+            />
+          </NavItem>
           <NavItem className="item">
             <Link
               className="nav-link"
@@ -98,6 +117,7 @@ const Menu = ({ history }) => {
               Home
             </Link>
           </NavItem>
+
           {!isAuthenticated() ? (
             <>
               <NavItem className="item">

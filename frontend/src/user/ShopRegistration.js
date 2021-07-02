@@ -15,7 +15,7 @@ import {
   Input,
 } from "reactstrap";
 import { Form, Formik, ErrorMessage } from "formik";
-import { Mail, Lock, User } from "react-feather";
+import { ShoppingCart, MapPin, User } from "react-feather";
 import "../global.scss";
 import { NotificationManager } from "react-notifications";
 import COLORS from "../assets/css/CssVariables";
@@ -134,7 +134,7 @@ const ShopRegistration = () => {
                               <InputGroup>
                                 <InputGroupAddon addonType="prepend">
                                   <span className="input-group-text">
-                                    <User className="icon-dual" />
+                                    <ShoppingCart className="icon-dual" />
                                   </span>
                                 </InputGroupAddon>
                                 <Input
@@ -162,7 +162,7 @@ const ShopRegistration = () => {
                               <InputGroup>
                                 <InputGroupAddon addonType="prepend">
                                   <span className="input-group-text">
-                                    <Lock className="icon-dual" />
+                                    <User className="icon-dual" />
                                   </span>
                                 </InputGroupAddon>
                                 <Input
@@ -183,7 +183,7 @@ const ShopRegistration = () => {
                               <InputGroup>
                                 <InputGroupAddon addonType="prepend">
                                   <span className="input-group-text">
-                                    <Mail className="icon-dual" />
+                                    <MapPin className="icon-dual" />
                                   </span>
                                 </InputGroupAddon>
                                 <Input
@@ -204,7 +204,7 @@ const ShopRegistration = () => {
                               <InputGroup>
                                 <InputGroupAddon addonType="prepend">
                                   <span className="input-group-text">
-                                    <Mail className="icon-dual" />
+                                    <MapPin className="icon-dual" />
                                   </span>
                                 </InputGroupAddon>
                                 <Input

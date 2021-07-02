@@ -9,7 +9,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { NotificationManager } from "react-notifications";
 
-const ManageProducts = ({ history }) => {
+const ManageProducts = ({ history, location }) => {
   const [products, setProducts] = useState([]);
   const [updated, setUpdated] = useState(false);
   const { SearchBar } = Search;

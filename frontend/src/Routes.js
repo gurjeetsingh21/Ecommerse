@@ -19,6 +19,7 @@ import CategoryDetails from "./admin/CategoryDetails";
 import ProductDetails from "./admin/ProductDetails";
 import ManageProducts from "./admin/ManageProducts";
 import ShopRegistration from "./user/ShopRegistration";
+import SearchResult from "./core/SearchResult";
 
 const Routes = () => {
   return (
@@ -37,6 +38,7 @@ const Routes = () => {
           <Route exact path="/checkout/success" component={SuccessfulPayment} />
           <Route exact path="/checkout/failed" component={FailedPayment} />
           <Route exact path="/cart" component={Cart} />
+          <Route exact path="/product/search/result" component={SearchResult} />
           <AdminRoute exact path="/admin/dashboard" component={Dashboard} />
           <AdminRoute
             exact

@@ -143,6 +143,7 @@ const ProductDetails = ({ history, location }) => {
                           author: location.state
                             ? location.state.data.author
                             : "",
+                          sold: location.state ? location.state.data.sold : 0,
                         }}
                         validationSchema={Yup.object().shape({
                           name: Yup.string().required(
@@ -180,6 +181,8 @@ const ProductDetails = ({ history, location }) => {
                           formData.append("shipping", values.shipping);
                           formData.append("quantity", values.quantity);
                           formData.append("author", values.author);
+                          formData.append("sold", values.sold);
+
                           if (location.state) {
                             console.log("Gurjeet");
                             try {

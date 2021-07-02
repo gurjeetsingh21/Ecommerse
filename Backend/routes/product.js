@@ -13,6 +13,7 @@ const {
   photo,
   getProductsByCategory,
   getProductsByShop,
+  listSearch,
 } = require("../controllers/product");
 const { requireSignin, isAuth, isAdmin } = require("../controllers/auth");
 const { userById } = require("../controllers/user");
@@ -22,6 +23,7 @@ const { shopById } = require("../controllers/shop");
 router.get("/product/:productId", read);
 router.post("/product/create/:userId", requireSignin, isAuth, isAdmin, create);
 router.post("/products/by/search", listBySearch);
+router.get("/products/search", listSearch);
 router.delete(
   "/product/:productId/:userId",
   requireSignin,
