@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { withRouter } from "react-router";
 import { Card, Row, Col, Container } from "react-bootstrap";
 import { FaListAlt, FaBook, FaTemperatureLow } from "react-icons/fa";

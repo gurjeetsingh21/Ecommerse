@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router";
 import { Container, Row, Col } from "react-bootstrap";
 import ProductCard from "./ProductCard";
-import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 import { AppStateContext } from "../context/AppStateProvider";
 import { Button } from "reactstrap";
