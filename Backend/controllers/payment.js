@@ -10,6 +10,7 @@ exports.payment = async (req, res) => {
         currency: "inr",
         product_data: {
           name: product.name,
+          description: `Sold by: ${product.shop.email}`,
         },
         unit_amount: product.price * 100,
       },

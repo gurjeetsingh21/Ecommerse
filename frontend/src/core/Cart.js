@@ -75,12 +75,6 @@ const Cart = ({ history }) => {
             <Col sm={12}>
               <h2 className="cart-heading">Here are your selected items</h2>
             </Col>
-
-            {filteredProducts.map((product, index) => (
-              <Col key={index} sm={12} style={{ marginBottom: 30 }}>
-                <ProductCard product={product} />
-              </Col>
-            ))}
           </Row>
           <Row>
             <Col
@@ -100,6 +94,13 @@ const Cart = ({ history }) => {
                 Buy All
               </Button>
             </Col>
+          </Row>
+          <Row>
+            {filteredProducts.map((product, index) => (
+              <Col key={index} sm={12} style={{ marginBottom: 30 }}>
+                <ProductCard product={product} />
+              </Col>
+            ))}
           </Row>
         </Container>
       ) : (

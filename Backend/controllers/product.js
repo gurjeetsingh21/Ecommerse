@@ -26,7 +26,7 @@ exports.getProductsByCategory = (req, res) => {
   Product.find({ category: { _id: req.category._id, name: req.category.name } })
     .select("-photo")
     .populate("category", "_id name")
-    .populate("shop", "_id name pincode")
+    .populate("shop", "_id name pincode email")
     .exec((err, products) => {
       if (err) {
         return res.status(400).json({
@@ -42,7 +42,7 @@ exports.getProductsByShop = (req, res) => {
   Product.find({ shop: { _id: req.shop._id } })
     .select("-photo")
     .populate("category", "_id name")
-    .populate("shop", "_id name pincode")
+    .populate("shop", "_id name pincode email")
     .exec((err, products) => {
       if (err) {
         return res.status(400).json({
@@ -207,7 +207,7 @@ exports.list = (req, res) => {
   Product.find()
     .select("-photo")
     .populate("category", "_id name")
-    .populate("shop", "_id name pincode")
+    .populate("shop", "_id name pincode email")
     .sort([[sortBy, order]])
     .limit(limit)
     .exec((err, data) => {
@@ -230,7 +230,7 @@ exports.listRelated = (req, res) => {
   Product.find({ _id: { $ne: req.product }, category: req.product.category })
     .limit(limit)
     .populate("category", "_id name")
-    .populate("shop", "_id name pincode")
+    .populate("shop", "_id name pincode email")
     .exec((err, products) => {
       if (err) {
         return res.status(400).json({

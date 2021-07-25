@@ -9,9 +9,11 @@ import axios from "axios";
 import { API } from "../config";
 import { withRouter } from "react-router";
 import CategoryCard from "./CategoryCard";
+import ProductCard from "./ProductCard";
 
 const Home = ({ history }) => {
   const [categories, setCategories] = useState(null);
+  const [newArrivals, setNewArrivals] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -21,6 +23,18 @@ const Home = ({ history }) => {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get(
+        `${API}/products?sortBy=${"createdAt"}&order=desc&limit=6`
+      );
+      console.log(response);
+      setNewArrivals(response.data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <React.Fragment>
       {categories && (
@@ -43,6 +57,21 @@ const Home = ({ history }) => {
               <img src={banner3} />
             </div>
           </Carousel>
+          <Container style={{ marginTop: 20 }}>
+            <Row>
+              <Col sm={12}>
+                <h1 className="home-category-heading">New Arrivals</h1>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 20 }}>
+              {newArrivals &&
+                newArrivals.map((product, index) => (
+                  <Col key={index} sm={12} style={{ marginBottom: 30 }}>
+                    <ProductCard product={product} />
+                  </Col>
+                ))}
+            </Row>
+          </Container>
           <Container style={{ marginTop: 20 }}>
             <Row>
               <Col sm={12}>
